@@ -1,0 +1,6 @@
+#
+# Main networking config
+#
+
+- name: Common CC
+  include: cc_common.yml

@@ -1,0 +1,10 @@
+#
+# Start the NC services
+#
+
+- name: Start the NC
+  service: name=eucalyptus-nc state=started
+
+- name: Start eucaned
+  service: name=eucanetd state=started
+  when: networking_mode == "EDGE"

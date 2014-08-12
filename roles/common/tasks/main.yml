@@ -1,0 +1,17 @@
+#
+# All components common tasks
+#
+
+- name: Setup repositories
+  yum: name={{ item }} state=present
+  with_items:
+  - "{{ euca_repo_url }}"
+  - "{{ euca2ools_repo_url }}"
+  - "{{ epel_repo_url }}"
+  - "{{ elrepo_repo_url }}"
+
+- name: Setup ntpd
+  yum: name=ntp state=present
+
+- name: Enable ntpd service
+  service: name=ntpd state=restarted

@@ -1,0 +1,44 @@
+#
+# All NCs common
+#
+
+- name: Setup NC packages
+  yum: name={{ item }} state=present
+  with_items:
+  - eucalyptus-nc
+  - eucanetd
+
+- name: Apply all zeroconf in main network config file
+  lineinfile: regexp=NOZEROCONF line=NOZEROCONF\=yes dest=/etc/sysconfig/network
+
+- name: Reload network
+  service: name=network state=restarted
+
+- name: Update VNET Mode
+  lineinfile: regexp=VNET_MODE line=VNET_MODE\=\"{{ networking_mode }}\" dest={{ euca_conf_path }}
+
+- name: Metadata in private mode
+  lineinfile: regexp=METADATA_USE_VM_PRIVATE line=METADATA_USE_VM_PRIVATE\=\"Y\" dest={{ euca_conf_path }}
+  when: edge_using_private == True
+
+- name: Update PRIV Interface
+  lineinfile: regexp=VNET_PRIVINTERFACE line=VNET_PRIVINTERFACE\=\"{{ nc_vnet_private }}\" dest={{ euca_conf_path }}
+
+- name: Update PUB Interface
+  lineinfile: regexp=VNET_PUBINTERFACE line=VNET_PUBINTERFACE\=\"{{ nc_vnet_public }}\" dest={{ euca_conf_path }}
+
+- name: Update BRIDGE Interface
+  lineinfile: regexp=VNET_BRIDGE line=VNET_BRIDGE\=\"{{ nc_vnet_bridge }}\" dest={{ euca_conf_path }}
+
+- name: Authorize CC SSH Key
+  authorized_key: user=root key="{{ lookup('file', '/var/tmp/cc-pub-key') }}"
+
+- name: Start libvirtd
+  service: name=libvirtd state=started
+
+- name: Delete default libvirt network
+  shell: virsh net-destroy default ; virsh net-undefine default
+  ignore_errors: yes
+
+- name: Restart libvirtd
+  service: name=libvirtd state=restarted

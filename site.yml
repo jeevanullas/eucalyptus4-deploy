@@ -1,0 +1,55 @@
+#
+# Deploy
+#
+
+- hosts: nodes
+- hosts: cluster
+- hosts: ufs
+- hosts: clc
+
+- hosts: ufs
+  vars_files:
+  - vars/main.yml
+  roles:
+  - common
+  - cloud
+
+- hosts: cluster
+  vars_files:
+  - vars/main.yml
+  roles:
+  - common
+  - cc
+
+- hosts: nodes
+  vars_files:
+  - vars/main.yml
+  roles:
+  - common
+  - nc
+
+- hosts: clc
+  vars_files:
+  - vars/main.yml
+  roles:
+  - common
+  - clc
+
+- hosts: clc
+  vars_files:
+  - vars/main.yml
+  roles:
+  - registerUFS
+  - registerCC
+
+- hosts: ufs
+  vars_files:
+  - vars/main.yml
+  roles:
+  - registerNC
+
+- hosts: nodes
+  vars_files:
+  - vars/main.yml
+  roles:
+  - startCompute

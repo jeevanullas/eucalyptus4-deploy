@@ -1,0 +1,10 @@
+#
+# EDGE related
+#
+
+- name: Config => Setting bridge
+  lineinfile: regexp=VNET_BRIDGE line=VNET_BRIDGE\=\"{{ cc_vnet_bridge  }}\" dest={{ euca_conf_path }}
+
+- name: create the EDGE config
+  template: src=network.json.j2 dest=/root/network.json
+

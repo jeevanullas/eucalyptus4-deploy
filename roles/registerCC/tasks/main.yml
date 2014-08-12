@@ -1,0 +1,11 @@
+#
+# CC Registration
+#
+
+- name: Debug CC IPs
+  debug: msg="{{ hostvars[item]['ansible_' + cc_vnet_private]['ipv4']['address'] }}" 
+  with_items: "{{ groups.cluster }}"
+
+- name: Register CC
+  shell: euca_conf --register-cluster --partition {{ cluster_name }} --component {{ cc_name }} --host "{{ hostvars[item]['ansible_' + cc_vnet_private]['ipv4']['address'] }}" 
+  with_items: "{{ groups.cluster }}"

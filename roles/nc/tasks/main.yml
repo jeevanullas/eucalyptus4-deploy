@@ -1,0 +1,21 @@
+#
+# Building NC config depending on the mode
+#
+
+- name: NC common
+  include: nc_common.yml
+
+- name: "Deploying NC in EDGE mode"
+  include: edge.yml
+  when: networking_mode == "EDGE"
+
+- name: "Deploy NC in MANAGED mode"
+  include: managed.yml
+  when: networking_mode == "MANAGED"
+
+- name: "Deploy NC in MANAGED-NOVLAN mode"
+  include: managed_novlan.yml
+  when: networking_mode == "MANAGED-NOVLAN"
+
+- name: Overcommit
+  include: overcommit.yml

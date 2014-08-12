@@ -1,0 +1,12 @@
+#
+# EDGE Networking
+#
+
+- name: Enable ipv4 forwarding
+  lineinfile: regexp=net.ipv4.ip_forward line=net.ipv4.ip_forward\=1 dest={{ sysctl_conf_path }}
+
+- name: Enable Bridge nf Calls
+  lineinfile: regexp=net.bridge.bridge-nf-call-iptables line=net.bridge.bridge-nf-call-iptables\=1 dest={{ sysctl_conf_path }}
+
+- name: Apply sysctl modifications
+  shell: sysctl -p

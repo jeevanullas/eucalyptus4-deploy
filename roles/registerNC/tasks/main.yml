@@ -1,0 +1,14 @@
+#
+# NC Registration
+#
+
+- name: Start CC service
+  service: name=eucalyptus-cc state=started
+
+- name: List NCs IPs
+  debug: msg="{{ hostvars[item]['ansible_' + nc_vnet_private]['ipv4']['address'] }}" 
+  with_items: "{{ groups.nodes }}"
+
+- name: Register all NCs
+  shell: euca_conf --register-nodes "{{ hostvars[item]['ansible_' + nc_vnet_private]['ipv4']['address'] }}" 
+  with_items: "{{ groups.nodes }}"

@@ -1,0 +1,24 @@
+#
+# Managed Config
+#
+
+- name: Set CC private vnet
+  lineinfile: regexp=VNET_PRIVINTERFACE line=VNET_PRIVINTERFACE\=\"{{ cc_vnet_private }}\" dest={{ euca_conf_path }}
+
+- name: Set CC public vnet
+  lineinfile: regexp=VNET_PUBINTERFACE line=VNET_PUBINTERFACE\=\"{{ pub_ips | join(" ") }}\" dest={{ euca_conf_path }}
+
+- name: Set PUB IPS
+  lineinfile: regexp=VNET_PUBLICIPS line=VNET_PUBLICIPS\=\"{{ managed_pub_ips }}\" dest={{ euca_conf_path }}
+
+- name: Set SUBNET
+  lineinfile: regexp=\#VNET_SUBNET line=VNET_SUBNET\=\"{{ managed_subnet }}\" dest={{ euca_conf_path }}
+
+- name: Set NETMASK
+  lineinfile: regexp=\#VNET_SUBNET@ line=VNET_SUBNET\=\"{{ managed_netmask }}\" dest={{ euca_conf_path }}
+
+- name: Set ADDRSPERNET
+  lineinfile: regexp=\#VNET_VNET_ADDRSPERNET line=VNET_VNET_ADDRSPERNET\=\"{{ managed_addrspernet }}\" dest={{ euca_conf_path }}
+
+- name: Set DNS
+  lineinfile: regexp=\#VNET_VNET_DNS line=VNET_VNET_DNS\=\"{{ managed_dns }}\" dest={{ euca_conf_path }}
