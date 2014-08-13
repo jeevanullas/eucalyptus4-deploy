@@ -1,0 +1,13 @@
+#
+# VLAN Auto configuration
+#
+
+NAME={{ nc_vlan_iface }}.{{ edge_vlan_tag }}
+DEVICE={{ nc_vlan_iface }}.{{ edge_vlan_tag }}
+VLAN=yes
+ONBOOT=yes
+BOOTPROTO=None
+BRIDGE={{ nc_vlan_br_prefix }}{{ edge_vlan_tag }}
+IPV6AUTOCONF=no
+IPV6INIT=no
+NOZEROCONF=yes

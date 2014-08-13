@@ -1,0 +1,16 @@
+#
+# Bridge Autoconfiguration
+#
+
+NAME={{ nc_vlan_br_prefix }}{{ edge_vlan_tag }}
+DEVICE={{ nc_vlan_br_prefix }}{{ edge_vlan_tag }}
+NOZEROCONF=yes
+IPV6INIT=no
+IPV6AUTOCONF=no
+TYPE=Bridge
+DELAY=0
+STP=no
+
+{% set compute_iface = 'ansible_' + nc_vlan_iface %}
+IPADDR={{ compute_iface.ipv4.address }}
+NETMASK={{ compute_iface.ivpv4.subnet }}
