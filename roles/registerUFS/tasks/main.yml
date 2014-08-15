@@ -4,8 +4,8 @@
 
 - name: Debug UFS IPs
   debug: msg="{{ hostvars[item]['ansible_' + java_iface]['ipv4']['address'] }}" 
-  with_items: "{{ groups.cloud }}"
+  with_items: "{{ groups.ufs }}"
 
 - name: Register UFS
   shell: euca_conf --register-service -T user-api -N {{ ufs_name }} -H "{{ hostvars[item]['ansible_' + java_iface]['ipv4']['address'] }}" 
-  with_items: "{{ groups.cloud }}"
+  with_items: "{{ groups.ufs }}"
