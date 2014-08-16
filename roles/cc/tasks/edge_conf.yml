@@ -4,6 +4,8 @@
 
 - name: Setting bridge
   lineinfile: regexp=VNET_BRIDGE line=VNET_BRIDGE\=\"{{ cc_vnet_bridge  }}\" dest={{ euca_conf_path }}
+  when:
+  - cc_vnet_bridge
 
 - name: Setting public iface
   lineinfile: regexp=VNET_PUBINTERFACE line=VNET_PUBINTERFACE\=\"{{ cc_vnet_public  }}\" dest={{ euca_conf_path }}

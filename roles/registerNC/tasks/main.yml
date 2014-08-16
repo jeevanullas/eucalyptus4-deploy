@@ -5,10 +5,26 @@
 - name: Start CC service
   service: name=eucalyptus-cc state=started
 
+- name: Debug CC
+  debug: msg="{{ hostvars[item]['vlan_tag'] }} - {{ hostvars[item]['vlan_iface'] }}"
+  with_items: "{{ groups.nc }}"
+  when: 
+  - partition == "{{ hostvars[item]['partition'] }}"
+  - nc_use_bridges
+  - use_vlans
+
 - name: List NCs IPs
-  debug: msg="{{ hostvars[item]['ansible_' + nc_vnet_private]['ipv4']['address'] }}" 
-  with_items: "{{ groups.nodes }}"
+  debug: msg="{{ hostvars[item]['ansible_' + "%s%d"|format(nc_bridge_prefix, hostvars[item]['vlan_tag'])]['ipv4']['address'] }}" 
+  with_items: "{{ groups.nc }}"
+  when: 
+  - partition == "{{ hostvars[item]['partition'] }}"
+  - nc_use_bridges
+  - use_vlans
 
 - name: Register all NCs
-  shell: euca_conf --register-nodes "{{ hostvars[item]['ansible_' + nc_vnet_private]['ipv4']['address'] }}" 
-  with_items: "{{ groups.nodes }}"
+  shell: euca_conf --register-nodes "{{ hostvars[item]['ansible_' + "%s%d"|format(nc_bridge_prefix, hostvars[item]['vlan_tag'])]['ipv4']['address'] }}"
+  with_items: "{{ groups.nc }}"
+  when: 
+  - partition == "{{ hostvars[item]['partition'] }}"
+  - nc_use_bridges
+  - use_vlans

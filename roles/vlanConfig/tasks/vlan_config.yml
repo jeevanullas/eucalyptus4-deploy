@@ -19,7 +19,9 @@
 
 - name: Set IP address to VLAN IFaces
   shell: ip addr add {{ vlan_ip }} dev {{ vlan_iface }}.{{ vlan_tag }}
-  when: flush_if_exists
+  when: 
+  - flush_if_exists
+  - not isNC
 
 - name: Enable iface
   shell: ifconfig {{ vlan_iface }}.{{ vlan_tag }} up

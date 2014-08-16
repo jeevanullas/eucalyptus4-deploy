@@ -11,12 +11,4 @@ euca_conf_path: /etc/eucalyptus/eucalyptus.conf
 euca_db_path: /var/lib/eucalyptus/db/data
 sysctl_conf_path: /etc/sysctl.conf
 
-ufs_name: EMEA
-cluster_name: emea-01
-cc_name: cc01
-
-java_opts: 
-java_iface: euca1000
-
 cpu_overcommit: 4
-

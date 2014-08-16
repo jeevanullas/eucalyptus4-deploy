@@ -7,74 +7,104 @@
 
 - hosts:
   - fe
-  - clusters
+  - cc
+  - sc
+  vars_files:
+  - vars/main.yml
+  - vars/networking.yml
+  vars:
+  - isNC: false
+  roles:
+  - vlanConfig
+
+- hosts: nc
   vars_files:
   - vars/main.yml
   - vars/networking.yml
   roles:
-  - networkConfig
+  - bridgeConfig
 
-# - hosts: clc
-#   vars_files:
-#   - vars/main.yml
-#   - vars/networking.yml
-#   roles:
-#   - common
-#   - clc
+- hosts: clc
+  vars_files:
+  - vars/main.yml
+  - vars/networking.yml
+  vars:
+  - java_iface: "{{ vlan_iface }}.{{ vlan_tag }}"
+  roles:
+  - common
+  - clc
 
-# - hosts: ufs
-#   vars_files:
-#   - vars/main.yml
-#   - vars/networking.yml
-#   roles:
-#   - common
-#   - ufs
+- hosts: ufs
+  vars_files:
+  - vars/main.yml
+  - vars/networking.yml
+  vars:
+  - java_iface: "{{ vlan_iface }}.{{ vlan_tag }}"
+  roles:
+  - common
+  - ufs
 
-# - hosts: walrus
-#   vars_files:
-#   - vars/main.yml
-#   - vars/networking.yml
-#   roles:
-#   - common
-#   - walrus
+- hosts: walrus
+  vars_files:
+  - vars/main.yml
+  - vars/networking.yml
+  vars:
+  - java_iface: "{{ vlan_iface }}.{{ vlan_tag }}"
+  roles:
+  - common
+  - walrus
 
-# - hosts: clc
-#   vars_files:
-#   - vars/main.yml
-#   roles:
-#   - registerUFS
-#   - registerWalrus
+- hosts: clc
+  vars_files:
+  - vars/main.yml
+  - vars/networking.yml
+  roles:
+  - registerUFS
+  - registerWalrus
 
-# - hosts: cc
-#   vars_files:
-#   - vars/main.yml
-#   - vars/networking.yml
-#   roles:
-#   - common
-#   - cc
+- hosts: cc
+  vars_files:
+  - vars/main.yml
+  - vars/networking.yml
+  roles:
+  - common
+  - cc
 
-# - hosts: storage
-#   vars_files:
-#   - vars/main.yml
-#   roles:
-#   - common
-#   - sc
+- hosts: sc
+  vars_files:
+  - vars/main.yml
+  vars:
+  - java_iface: "{{ vlan_iface }}.{{ vlan_tag }}"
+  roles:
+  - common
+  - sc
 
-# - hosts: nodes
-#   vars_files:
-#   - vars/main.yml
-#   roles:
-#   - common
-#   - nc
+- hosts: clc
+  vars_files:
+  - vars/main.yml
+  - vars/networking.yml
+  roles:
+  - registerCC
+  - registerSC
 
-# - hosts: cluster
-#   vars_files:
-#   - vars/main.yml
-#   roles:
-#   - registerNC
+- hosts: nc
+  vars_files:
+  - vars/main.yml
+  - vars/networking.yml
+  roles:
+  - common
+  - nc
 
-# - hosts: nodes
-#   vars_files:
-#   - vars/main.yml
-#   roles:
-#   - startCompute
+- hosts: cc
+  vars_files:
+  - vars/main.yml
+  - vars/networking.yml
+  roles:
+  - registerNC
+
+- hosts: nc
+  vars_files:
+  - vars/main.yml
+  - vars/networking.yml
+  roles:
+  - startCompute

@@ -3,10 +3,12 @@
 #
 
 - name: Setup NC packages
-  yum: name={{ item }} state=present
-  with_items:
-  - eucalyptus-nc
-  - eucanetd
+  yum: name=eucalyptus-nc state=present
+
+- name: Setup eucanetd
+  yum: name=eucanetd state=present
+  when:
+  - networking_mode == "EDGE"
 
 - name: Apply all zeroconf in main network config file
   lineinfile: regexp=NOZEROCONF line=NOZEROCONF\=yes dest=/etc/sysconfig/network
@@ -22,13 +24,31 @@
   when: edge_using_private == True
 
 - name: Update PRIV Interface
-  lineinfile: regexp=VNET_PRIVINTERFACE line=VNET_PRIVINTERFACE\=\"{{ nc_vnet_private }}\" dest={{ euca_conf_path }}
+  lineinfile: regexp=VNET_PRIVINTERFACE line=VNET_PRIVINTERFACE\=\"{{ "%s%d"|format(nc_bridge_prefix, vlan_tag) }}\" dest={{ euca_conf_path }}
+  when:
+  - use_vlans
+  - nc_use_bridges
+
+- name: Update PRIV Interface
+  lineinfile: regexp=VNET_PRIVINTERFACE line=VNET_PRIVINTERFACE\=\"{{ nc_private_iface }}\" dest={{ euca_conf_path }}
+  when:
+  - not use_vlans
+  - not nc_use_bridges
 
 - name: Update PUB Interface
   lineinfile: regexp=VNET_PUBINTERFACE line=VNET_PUBINTERFACE\=\"{{ nc_vnet_public }}\" dest={{ euca_conf_path }}
 
 - name: Update BRIDGE Interface
-  lineinfile: regexp=VNET_BRIDGE line=VNET_BRIDGE\=\"{{ nc_vnet_bridge }}\" dest={{ euca_conf_path }}
+  lineinfile: regexp=VNET_BRIDGE line=VNET_BRIDGE\=\"{{ "%s%d"|format(nc_bridge_prefix, vlan_tag) }}\" dest={{ euca_conf_path }}
+  when:
+  - use_vlans
+  - nc_use_bridges
+
+- name: Update BRIDGE Interface
+  lineinfile: regexp=VNET_BRIDGE line=VNET_BRIDGE\=\"{{ nc_bridge_prefix }}\" dest={{ euca_conf_path }}
+  when:
+  - not use_vlans
+  - nc_use_bridges
 
 - name: Authorize CC SSH Key
   authorized_key: user=root key="{{ lookup('file', '/var/tmp/cc-pub-key') }}"

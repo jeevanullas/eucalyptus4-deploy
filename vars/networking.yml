@@ -8,8 +8,6 @@ networking_mode: EDGE
 edge_using_private: true
 
 use_vlans: true
-nc_use_bridges: true
-nc_bridge_prefix: eucabr
 
 flush_if_exists: false
 
@@ -34,10 +32,12 @@ clusters:
 
 ## BACKEND IFACES DEFINITION ##
 
+# NC #
 nc_vnet_public: em1
-nc_vnet_bridge_prefix: eucabr
-nc_vnet_private: "{{ nc_vnet_bridge }}"
+nc_use_bridges: true
+nc_bridge_prefix: eucabr
 
+# CC #
 cc_vnet_public: em1
-cc_vnet_bridge: euca1000
-cc_vnet_private: "{{ cc_vnet_bridge }}"
+cc_vnet_bridge: false
+cc_vnet_private: em2

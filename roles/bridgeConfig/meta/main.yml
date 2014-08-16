@@ -1,0 +1,6 @@
+#
+# Bride dependencies
+#
+
+dependencies:
+  - { role: vlanConfig, isNC: true }

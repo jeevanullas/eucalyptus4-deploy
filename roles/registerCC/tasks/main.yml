@@ -3,9 +3,13 @@
 #
 
 - name: Debug CC IPs
-  debug: msg="{{ hostvars[item]['ansible_' + cc_vnet_private]['ipv4']['address'] }}" 
-  with_items: "{{ groups.cluster }}"
+  debug: msg="{{ hostvars[item]['ansible_' + "%s.%d"|format(cc_vnet_private, hostvars[item]['vlan_tag'])]['ipv4']['address'] }}" 
+  with_items: "{{ groups.cc }}"
+  when:
+  - use_vlans
 
 - name: Register CC
-  shell: euca_conf --register-cluster --partition {{ cluster_name }} --component {{ cc_name }} --host "{{ hostvars[item]['ansible_' + cc_vnet_private]['ipv4']['address'] }}" 
-  with_items: "{{ groups.cluster }}"
+  shell: euca_conf --register-cluster --partition {{ hostvars[item]['partition'] }} --component {{ hostvars[item]['cc_name'] }} --host "{{ hostvars[item]['ansible_' + "%s.%d"|format(cc_vnet_private,  hostvars[item]['vlan_tag'])]['ipv4']['address'] }}" 
+  with_items: "{{ groups.cc }}"
+  when:
+  - use_vlans

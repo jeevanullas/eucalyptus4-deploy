@@ -1,0 +1,15 @@
+#
+# SC Registration
+#
+
+- name: Debug SC IPs
+  debug: msg="{{ hostvars[item]['ansible_' + "%s.%d"|format(hostvars[item]['vlan_iface'], hostvars[item]['vlan_tag'])]['ipv4']['address'] }}" 
+  with_items: "{{ groups.sc }}"
+  when:
+  - use_vlans
+
+- name: Register SC
+  shell: euca_conf --register-sc --partition {{ hostvars[item]['partition'] }} --component {{ hostvars[item]['sc_name'] }} --host "{{ hostvars[item]['ansible_' + "%s.%d"|format(hostvars[item]['vlan_iface'],  hostvars[item]['vlan_tag'])]['ipv4']['address'] }}" 
+  with_items: "{{ groups.sc }}"
+  when:
+  - use_vlans
