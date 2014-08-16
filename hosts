@@ -1,16 +1,34 @@
 [clc]
-clc-0
+emea-0
 
 [clc:vars]
 vlan_iface=eth1
 vlan_ip=172.16.0.2/16
 
 [walrus]
-nc-9 vlan_ip=172.16.0.12/16 walrus_name="walrus-emea"
+emea-1 vlan_ip=172.16.0.12/16 walrus_name="walrus-emea"
 
 [ufs]
-nc-0 ufs_name=EMEA-01 vlan_ip=172.16.0.3/16
-nc-8 ufs_name=EMEA-02 vlan_ip=172.16.0.11/16
+emea-2 ufs_name=EMEA-01 vlan_ip=172.16.0.3/16
+emea-3 ufs_name=EMEA-02 vlan_ip=172.16.0.11/16
+
+[cc-emea-01]
+nc-1 vlan_ip=172.17.0.1/16 cc_name=cc-emea-01 cc_vnet_private=em2.300
+
+[cc-emea-02]
+nc-4 vlan_ip=172.18.0.1/16 cc_name=cc-emea-02 cc_net_private=em2.301
+
+[sc-emea-01]
+nc-2 vlan_ip=172.17.0.2/16 sc_name=sc-emea-01
+
+[sc-emea-02]
+nc-5 vlan_ip=172.18.0.2/16 sc_name=sc-emea-02
+
+[nc-emea-01]
+nc-3 vlan_ip=172.17.0.3/16
+
+[nc-emea-02]
+nc-7 vlan_ip=172.18.0.3/16
 
 [fe:children]
 clc
@@ -21,24 +39,12 @@ walrus
 vlan_tag=200
 vlan_iface=em2
 
-[cc-emea-01]
-nc-1 vlan_ip=172.17.0.1/16 cc_name=cc-emea-01 cc_vnet_private=em2.300
-
-[cc-emea-02]
-nc-4 vlan_ip=172.18.0.1/16 cc_name=cc-emea-02 cc_net_private=em2.301
-
 [cc:children]
 cc-emea-01
 cc-emea-02
 
 [cc:vars]
 vlan_iface=em2
-
-[sc-emea-01]
-nc-2 vlan_ip=172.17.0.2/16 sc_name=sc-emea-01
-
-[sc-emea-02]
-nc-5 vlan_ip=172.18.0.2/16 sc_name=sc-emea-02
 
 [sc:children]
 sc-emea-01
@@ -47,19 +53,12 @@ sc-emea-02
 [sc:vars]
 vlan_iface=em2
 
-[nc-emea-01]
-nc-3 vlan_ip=172.17.0.3/16
-
-[nc-emea-02]
-nc-7 vlan_ip=172.18.0.3/16
-
 [nc:children]
 nc-emea-01
 nc-emea-02
 
 [nc:vars]
 vlan_iface=em2
-tag=Node
 
 [emea01:children]
 cc-emea-01

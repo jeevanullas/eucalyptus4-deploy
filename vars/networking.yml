@@ -9,7 +9,7 @@ edge_using_private: true
 
 use_vlans: true
 
-flush_if_exists: false
+flush_if_exists: true
 
 ## CLUSTER NETWORK DEFINITION ##
 
@@ -23,7 +23,7 @@ instance_dns_servers:
 
 # Cloud Public IPs (EIPs)
 pub_ips:
-- "109.104.120.20-10.142.120.60"
+- "109.104.120.20-109.104.120.60"
 
 # Cluster specific networking definition
 clusters:
