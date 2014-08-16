@@ -44,12 +44,3 @@
 
 - name: create the EDGE config
   template: src=network.json.j2 dest=/root/network.json
-
-#- name: Register UFS
-#  shell: euca_conf --register-service -T user-api -N {{ ufs_name }} -H {{  hostvars[inventory_hostname]['ansible_' + java_iface]['ipv4']['address'] }}
-
-#- name: Get the CLC credentials
-#  shell: euca_conf --get-credentials=admin.zip
-
-#- name: Get CLC credentials
-#  fetch: src=/root/admin.zip dest=/var/tmp/clc-admin.zip flat=yes

@@ -1,0 +1,43 @@
+#
+# Network specific parameters
+#
+
+## CLOUD NETWORK CONFIGURATION ##
+
+networking_mode: EDGE
+edge_using_private: true
+
+use_vlans: true
+nc_use_bridges: true
+nc_bridge_prefix: eucabr
+
+flush_if_exists: false
+
+## CLUSTER NETWORK DEFINITION ##
+
+# DNS domain search
+instance_dns_domain: emea.lan
+
+# DNS nameservers
+instance_dns_servers: 
+- 109.104.120.14
+- 10.142.0.14
+
+# Cloud Public IPs (EIPs)
+pub_ips:
+- "109.104.120.20-10.142.120.60"
+
+# Cluster specific networking definition
+clusters:
+- {"Name": "emea-01", "MacPrefix": "d0:0d", "Subnet": { "Name": "172.17.0.0", "Subnet": "172.17.0.0", "Netmask": "255.255.0.0", "Gateway": "172.17.255.254"}, "PrivateIps": ["172.17.1.0-172.17.254.254"]}
+- {"Name": "emea-02", "MacPrefix": "d0:0d", "Subnet": { "Name": "172.18.0.0", "Subnet": "172.18.0.0", "Netmask": "255.255.0.0", "Gateway": "172.18.255.254"}, "PrivateIps": ["172.18.1.0-172.18.254.254"]}
+
+## BACKEND IFACES DEFINITION ##
+
+nc_vnet_public: em1
+nc_vnet_bridge_prefix: eucabr
+nc_vnet_private: "{{ nc_vnet_bridge }}"
+
+cc_vnet_public: em1
+cc_vnet_bridge: euca1000
+cc_vnet_private: "{{ cc_vnet_bridge }}"

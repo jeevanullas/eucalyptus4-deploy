@@ -1,0 +1,9 @@
+#
+# Configure all components networking for cloud deployment
+#
+
+- name: Create VLAN interfaces
+  include: vlan_config.yml
+  when:
+  - use_vlans
+  - networking_mode == "EDGE" or networking_mode == "MANAGED-NOVLAN"

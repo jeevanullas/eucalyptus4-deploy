@@ -1,0 +1,15 @@
+#
+# Cloud components
+#
+
+- name: Setup Storage Controller
+  yum: name={{ item }} state=present
+  with_items:
+  - eucalyptus-sc
+
+- name: Debug
+  debug: msg={{ hostvars[inventory_hostname]['ansible_' + java_iface] }}
+
+- name: Cloud Java components binding
+  lineinfile: regexp=CLOUD_OPTS line=CLOUD_OPTS\=\"--bind-addr={{  hostvars[inventory_hostname]['ansible_' + java_iface]['ipv4']['address'] }}\" dest={{ euca_conf_path }}
+

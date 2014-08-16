@@ -1,0 +1,9 @@
+#
+# Configure all components networking for cloud deployment
+#
+
+- name: Create Bridges for NCs
+  include: bridge_config.yml
+  when:
+  - nc_use_bridges
+  - networking_mode == "EDGE" or networking_mode == "MANAGED-NOVLAN"

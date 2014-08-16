@@ -2,54 +2,79 @@
 # Deploy
 #
 
-- hosts: nodes
-- hosts: cluster
-- hosts: ufs
-- hosts: clc
+- hosts: clusters
+- hosts: fe
 
-- hosts: ufs
+- hosts:
+  - fe
+  - clusters
   vars_files:
   - vars/main.yml
+  - vars/networking.yml
   roles:
-  - common
-  - ufs
+  - networkConfig
 
-- hosts: cluster
-  vars_files:
-  - vars/main.yml
-  roles:
-  - common
-  - cc
+# - hosts: clc
+#   vars_files:
+#   - vars/main.yml
+#   - vars/networking.yml
+#   roles:
+#   - common
+#   - clc
 
-- hosts: nodes
-  vars_files:
-  - vars/main.yml
-  roles:
-  - common
-  - nc
+# - hosts: ufs
+#   vars_files:
+#   - vars/main.yml
+#   - vars/networking.yml
+#   roles:
+#   - common
+#   - ufs
 
-- hosts: clc
-  vars_files:
-  - vars/main.yml
-  roles:
-  - common
-  - clc
+# - hosts: walrus
+#   vars_files:
+#   - vars/main.yml
+#   - vars/networking.yml
+#   roles:
+#   - common
+#   - walrus
 
-- hosts: clc
-  vars_files:
-  - vars/main.yml
-  roles:
-  - registerUFS
-  - registerCC
+# - hosts: clc
+#   vars_files:
+#   - vars/main.yml
+#   roles:
+#   - registerUFS
+#   - registerWalrus
 
-- hosts: cluster
-  vars_files:
-  - vars/main.yml
-  roles:
-  - registerNC
+# - hosts: cc
+#   vars_files:
+#   - vars/main.yml
+#   - vars/networking.yml
+#   roles:
+#   - common
+#   - cc
 
-- hosts: nodes
-  vars_files:
-  - vars/main.yml
-  roles:
-  - startCompute
+# - hosts: storage
+#   vars_files:
+#   - vars/main.yml
+#   roles:
+#   - common
+#   - sc
+
+# - hosts: nodes
+#   vars_files:
+#   - vars/main.yml
+#   roles:
+#   - common
+#   - nc
+
+# - hosts: cluster
+#   vars_files:
+#   - vars/main.yml
+#   roles:
+#   - registerNC
+
+# - hosts: nodes
+#   vars_files:
+#   - vars/main.yml
+#   roles:
+#   - startCompute

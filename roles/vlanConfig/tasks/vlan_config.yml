@@ -1,0 +1,25 @@
+#
+# VLANs configuration
+#
+
+- name: Check if VLAN already exists
+  shell: ifconfig {{ vlan_iface }}.{{ vlan_tag }}
+  register: result
+  ignore_errors: True
+
+- name: VLANs for component
+  shell: vconfig add {{ vlan_iface }} {{ vlan_tag }}
+  when: result|failed
+
+- name: Flush IP of existing
+  shell: ip addr flush {{ vlan_iface }}.{{ vlan_tag }}
+  when:
+  - result|success
+  - flush_if_exists
+
+- name: Set IP address to VLAN IFaces
+  shell: ip addr add {{ vlan_ip }} dev {{ vlan_iface }}.{{ vlan_tag }}
+  when: flush_if_exists
+
+- name: Enable iface
+  shell: ifconfig {{ vlan_iface }}.{{ vlan_tag }} up

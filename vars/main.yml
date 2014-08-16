@@ -9,14 +9,10 @@ elrepo_repo_url: http://downloads.eucalyptus.com/software/eucalyptus/4.0/centos/
 
 euca_conf_path: /etc/eucalyptus/eucalyptus.conf
 euca_db_path: /var/lib/eucalyptus/db/data
-
 sysctl_conf_path: /etc/sysctl.conf
 
-networking_mode: EDGE
-edge_using_private: True
-
-ufs_name: PRC
-cluster_name: prc-01
+ufs_name: EMEA
+cluster_name: emea-01
 cc_name: cc01
 
 java_opts: 
@@ -24,21 +20,3 @@ java_iface: euca1000
 
 cpu_overcommit: 4
 
-instance_dns_domain: emea.lan
-instance_dns_servers: 
-- 10.1.1.254
-- 8.8.8.8
-
-pub_ips:
-- "10.104.6.1-10.104.6.62"
-
-clusters:
-- {"Name": "prc-01", "MacPrefix": "d0:0d", "Subnet": { "Name": "172.33.0.0", "Subnet": "172.33.0.0", "Netmask": "255.255.0.0", "Gateway": "172.33.255.254"}, "PrivateIps": ["172.33.1.0-172.33.254.254"]}
-
-nc_vnet_bridge: br1
-nc_vnet_public: em1
-nc_vnet_private: "{{ nc_vnet_bridge }}"
-
-cc_vnet_public: em1
-cc_vnet_bridge: br1
-cc_vnet_private: "{{ cc_vnet_bridge }}"
