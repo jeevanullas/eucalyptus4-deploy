@@ -8,11 +8,3 @@
 - name: Creates the bridge iface config file
   template: src=bridge.yml dest={{ netcfg_path }}/ifcfg-{{ nc_vlan_br_prefix }}{{ edge_vlan_tag }}
 
-- name: Creates the VLAN
-  shell: vconfig add {{ nc_vlan_iface }} {{ edge_vlan_tag }}
-
-- name: Create the bridge
-  shell: brctl addbr {{ nc_vlan_br_prefix }}{{ edge_vlan_tag }}
-
-- name: Binds the bridge to the vlan iface
-  shell: brctl addif {{ nc_vlan_br_prefix }}{{ edge_vlan_tag }} {{ nc_vlan_iface }}.{{ edge_vlan_tag }}

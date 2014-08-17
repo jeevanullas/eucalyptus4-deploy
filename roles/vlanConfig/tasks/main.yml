@@ -7,3 +7,9 @@
   when:
   - use_vlans
   - networking_mode == "EDGE" or networking_mode == "MANAGED-NOVLAN"
+
+- name: Remove zeroconf
+  lineinfile: line=NOZEROCONF\=yes dest={{ network_conf_path }} state=present
+
+- name: Reload network
+  service: name=network state=reloaded

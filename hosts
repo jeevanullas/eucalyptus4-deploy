@@ -1,3 +1,18 @@
+#
+# Eucalyptus 4 - Deploy with Ansible
+#
+
+## VARIABLES DEFINITIONS ##
+# Recommended changes :
+# - vlan_iface : NIC where VLAN gets created
+# - vlan_ip : IP assigned to VLAN Iface
+# - vlan_gw : VLAN Subnet's GW
+# - partition : name of the AZ
+
+#
+# CLC HOST  - UNIQUE !!
+#
+
 [clc]
 emea-0
 
@@ -5,30 +20,57 @@ emea-0
 vlan_iface=eth1
 vlan_ip=172.16.0.2/16
 
+#
+# WALRUS - UNIQUE !!
+#
 [walrus]
-emea-1 vlan_ip=172.16.0.12/16 walrus_name="walrus-emea"
+emea-1 vlan_ip=172.16.0.3/16 walrus_name="walrus-emea"
 
+#
+# User Facing Services - ufs_name MUST BE UNIQUE
+#
 [ufs]
-emea-2 ufs_name=EMEA-01 vlan_ip=172.16.0.3/16
-emea-3 ufs_name=EMEA-02 vlan_ip=172.16.0.11/16
+emea-2 vlan_ip=172.16.0.4/16 ufs_name=EMEA-01
+emea-3 vlan_ip=172.16.0.5/16 ufs_name=EMEA-02
+
+#
+# CC definition - Change name as pleases
+# cc_name MUST BE UNIQUE | 1 CC per name
+#
 
 [cc-emea-01]
-nc-1 vlan_ip=172.17.0.1/16 cc_name=cc-emea-01 cc_vnet_private=em2.300
+emea-4 vlan_ip=172.17.0.2/16 cc_name=cc-emea-01 cc_vnet_private=em2.300
 
 [cc-emea-02]
-nc-4 vlan_ip=172.18.0.1/16 cc_name=cc-emea-02 cc_net_private=em2.301
+emea-5 vlan_ip=172.18.0.2/16 cc_name=cc-emea-02 cc_net_private=em2.301
+
+#
+# Storage Controllers
+# sc_name MUST BE UNIQUE
+#
 
 [sc-emea-01]
-nc-2 vlan_ip=172.17.0.2/16 sc_name=sc-emea-01
+emea-6 vlan_ip=172.16.0.6/16 sc_name=sc-emea-01
 
 [sc-emea-02]
-nc-5 vlan_ip=172.18.0.2/16 sc_name=sc-emea-02
+emea-7 vlan_ip=172.16.0.7/16 sc_name=sc-emea-02
+
+#
+# Node Controllers
+#
 
 [nc-emea-01]
-nc-3 vlan_ip=172.17.0.3/16
+emea-8 vlan_ip=172.17.0.3/16
+emea-9 vlan_ip=172.17.0.4/16
 
 [nc-emea-02]
-nc-7 vlan_ip=172.18.0.3/16
+emea-10 vlan_ip=172.18.0.3/16
+
+#
+# Front-End Services
+# CLC / UFS / Walrus (JAVA Components)
+#
+
 
 [fe:children]
 clc
@@ -38,6 +80,12 @@ walrus
 [fe:vars]
 vlan_tag=200
 vlan_iface=em2
+vlan_gw=172.16.255.254
+
+#
+# Cluster Controllers
+# Allows to manage CC tasks for any AZ cluster | CHANGE only if needed
+#
 
 [cc:children]
 cc-emea-01
@@ -46,12 +94,24 @@ cc-emea-02
 [cc:vars]
 vlan_iface=em2
 
+#
+# Storage Controllers
+# Allows to manage SC tasks for any AZ cluster | CHANGE only if needed
+#
+
 [sc:children]
 sc-emea-01
 sc-emea-02
 
 [sc:vars]
 vlan_iface=em2
+vlan_tag=200
+vlan_gw=172.16.255.254
+
+#
+# Node Controllers
+# Allows to manage NCs tasks for any Node | CHANGE name only if needed
+#
 
 [nc:children]
 nc-emea-01
@@ -59,6 +119,12 @@ nc-emea-02
 
 [nc:vars]
 vlan_iface=em2
+
+#
+# CLUSTER DEFINITION
+# Allow to define values global to the cluster, such as VLAN TAG or partition name | CHANGE NAME ONLY
+# MANDATORY to keep CC/SC/NC to form a complete cluster
+#
 
 [emea01:children]
 cc-emea-01
@@ -68,6 +134,7 @@ nc-emea-01
 [emea01:vars]
 partition=emea-01
 vlan_tag=300
+vlan_gw=172.17.255.254
 
 [emea02:children]
 cc-emea-02
@@ -77,6 +144,11 @@ nc-emea-02
 [emea02:vars]
 partition=emea-02
 vlan_tag=301
+vlan_gw=172.18.255.254
+
+#
+# ALL CLUSTERS AS ONE
+#
 
 [clusters:children]
 emea01

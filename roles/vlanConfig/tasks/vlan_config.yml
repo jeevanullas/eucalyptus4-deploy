@@ -23,5 +23,29 @@
   - flush_if_exists
   - not isNC
 
-- name: Enable iface
+- name: Enable VLAN IFace
   shell: ifconfig {{ vlan_iface }}.{{ vlan_tag }} up
+
+- name: Get IP
+  shell: echo {{ vlan_ip }} | cut -d '/' -f 1
+  register: ip
+
+- name: Get prefix
+  shell: echo {{ vlan_ip }} | cut -d '/' -f 2
+  register: prefix
+
+- name: Create the VLAN config file
+  template: src=vlan.j2 dest="{{ netcfg_path }}/ifcfg-{{ vlan_iface }}.{{ vlan_tag }}"
+  when:
+  - use_vlans
+
+- name: Add the defined routes
+  shell: ip route add {{ item }} via {{ vlan_gw }}
+  with_items: "{{ vlan_routes }}"
+  ignore_errors: true
+
+- name: Generate static routes config file
+  template: src=routes.j2 dest="{{ netcfg_path }}/route-{{ vlan_iface }}.{{ vlan_tag }}"
+
+- name: Network reload
+  service: name=network state=reloaded

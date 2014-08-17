@@ -8,7 +8,10 @@ epel_repo_url: http://downloads.eucalyptus.com/software/eucalyptus/4.0/centos/6/
 elrepo_repo_url: http://downloads.eucalyptus.com/software/eucalyptus/4.0/centos/6/x86_64/elrepo-release-6.noarch.rpm
 
 euca_conf_path: /etc/eucalyptus/eucalyptus.conf
+netcfg_path: /etc/sysconfig/network-scripts
 euca_db_path: /var/lib/eucalyptus/db/data
+network_conf_path: /etc/sysconfig/network
 sysctl_conf_path: /etc/sysctl.conf
+
 
 cpu_overcommit: 4

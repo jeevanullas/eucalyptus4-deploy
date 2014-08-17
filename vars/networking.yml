@@ -2,17 +2,27 @@
 # Network specific parameters
 #
 
+#
+## ROUTES ##
+#
+
+# In case of multi-vlan & multi-subnet, adds these routes on hosts:
+vlan_routes:
+- 172.16.0.0/16
+- 172.17.0.0/16
+- 172.18.0.0/16
+
+
 ## CLOUD NETWORK CONFIGURATION ##
 
 networking_mode: EDGE
 edge_using_private: true
 
 use_vlans: true
-
 flush_if_exists: true
 
-## CLUSTER NETWORK DEFINITION ##
 
+## CLUSTER NETWORK DEFINITION ##
 # DNS domain search
 instance_dns_domain: emea.lan
 
