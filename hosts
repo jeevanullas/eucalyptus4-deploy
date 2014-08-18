@@ -50,17 +50,16 @@ emea-5 vlan_ip=172.18.0.2/16 cc_name=cc-emea-02 cc_net_private=em2.301
 #
 
 [sc-emea-01]
-emea-6 vlan_ip=172.16.0.6/16 sc_name=sc-emea-01
+emea-6 vlan_ip=172.16.0.6/16 sc_name=sc-emea-01 vlan_tag=200
 
 [sc-emea-02]
-emea-7 vlan_ip=172.16.0.7/16 sc_name=sc-emea-02
+emea-8 vlan_ip=172.16.0.7/16 sc_name=sc-emea-02 vlan_tag=200
 
 #
 # Node Controllers
 #
 
 [nc-emea-01]
-emea-8 vlan_ip=172.17.0.3/16
 emea-9 vlan_ip=172.17.0.4/16
 
 [nc-emea-02]

@@ -10,5 +10,10 @@ BOOTPROTO=None
 IPV6AUTOCONF=no
 IPV6INIT=no
 NOZEROCONF=yes
+{% if not isNC %}
 IPADDR={{ ip.stdout }}
 PREFIX={{ prefix.stdout }}
+{% endif %}
+{% if isNC %}
+BRIDGE={{ nc_bridge_prefix }}{{ vlan_tag }}
+{% endif %}

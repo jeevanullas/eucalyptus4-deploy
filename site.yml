@@ -21,7 +21,10 @@
   vars_files:
   - vars/main.yml
   - vars/networking.yml
+  vars:
+  - isNC: true
   roles:
+  - vlanConfig
   - bridgeConfig
 
 - hosts: clc
@@ -73,6 +76,7 @@
 - hosts: sc
   vars_files:
   - vars/main.yml
+  - vars/networking.yml
   vars:
   - java_iface: "{{ vlan_iface }}.{{ vlan_tag }}"
   roles:

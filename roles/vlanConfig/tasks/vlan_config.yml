@@ -44,8 +44,14 @@
   with_items: "{{ vlan_routes }}"
   ignore_errors: true
 
+- name: Get the routes status
+  shell: ip route | grep via | grep "{{ vlan_gw }}"
+  register: routes_vlan
+  ignore_errors: true
+  when:
+  - not isNC
+
 - name: Generate static routes config file
   template: src=routes.j2 dest="{{ netcfg_path }}/route-{{ vlan_iface }}.{{ vlan_tag }}"
-
-- name: Network reload
-  service: name=network state=reloaded
+  when:
+  - not isNC

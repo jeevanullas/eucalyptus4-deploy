@@ -9,7 +9,7 @@
   - networking_mode == "EDGE" or networking_mode == "MANAGED-NOVLAN"
 
 - name: Remove zeroconf
-  lineinfile: line=NOZEROCONF\=yes dest={{ network_conf_path }} state=present
+  lineinfile: line=NOZEROCONF\=yes dest={{ network_conf_path }} state=present regexp=NOZEROCONF
 
 - name: Reload network
   service: name=network state=reloaded
