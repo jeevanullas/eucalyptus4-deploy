@@ -14,24 +14,23 @@
 #
 
 [clc]
-emea-0
+odc-c-30
 
 [clc:vars]
-vlan_iface=eth1
+vlan_iface=em2
 vlan_ip=172.16.0.2/16
 
 #
 # WALRUS - UNIQUE !!
 #
 [walrus]
-emea-1 vlan_ip=172.16.0.3/16 walrus_name="walrus-emea"
+odc-c-32 vlan_ip=172.16.0.3/16 walrus_name="walrus-prc"
 
 #
 # User Facing Services - ufs_name MUST BE UNIQUE
 #
 [ufs]
-emea-2 vlan_ip=172.16.0.4/16 ufs_name=EMEA-01
-emea-3 vlan_ip=172.16.0.5/16 ufs_name=EMEA-02
+odc-c-33 vlan_ip=172.16.0.4/16 ufs_name=EMEA-01
 
 #
 # CC definition - Change name as pleases
@@ -39,10 +38,7 @@ emea-3 vlan_ip=172.16.0.5/16 ufs_name=EMEA-02
 #
 
 [cc-emea-01]
-emea-4 vlan_ip=172.17.0.2/16 cc_name=cc-emea-01 cc_vnet_private=em2.300
-
-[cc-emea-02]
-emea-5 vlan_ip=172.18.0.2/16 cc_name=cc-emea-02 cc_net_private=em2.301
+odc-c-34 vlan_ip=172.16.0.5/16 cc_name=cc-emea-01 cc_vnet_private=em2.1000
 
 #
 # Storage Controllers
@@ -50,20 +46,17 @@ emea-5 vlan_ip=172.18.0.2/16 cc_name=cc-emea-02 cc_net_private=em2.301
 #
 
 [sc-emea-01]
-emea-6 vlan_ip=172.16.0.6/16 sc_name=sc-emea-01 vlan_tag=200
+odc-c-35 vlan_ip=172.16.0.5/16 sc_name=sc-emea-01 vlan_tag=1000 vlan_iface=em2
 
-[sc-emea-02]
-emea-8 vlan_ip=172.16.0.7/16 sc_name=sc-emea-02 vlan_tag=200
 
 #
 # Node Controllers
 #
 
 [nc-emea-01]
-emea-9 vlan_ip=172.17.0.4/16
+odc-c-36 vlan_ip=172.16.0.7/16
+odc-c-39 vlan_ip=172.16.0.8/16
 
-[nc-emea-02]
-emea-10 vlan_ip=172.18.0.3/16
 
 #
 # Front-End Services
@@ -77,7 +70,7 @@ ufs
 walrus
 
 [fe:vars]
-vlan_tag=200
+vlan_tag=1000
 vlan_iface=em2
 vlan_gw=172.16.255.254
 
@@ -88,7 +81,6 @@ vlan_gw=172.16.255.254
 
 [cc:children]
 cc-emea-01
-cc-emea-02
 
 [cc:vars]
 vlan_iface=em2
@@ -100,11 +92,10 @@ vlan_iface=em2
 
 [sc:children]
 sc-emea-01
-sc-emea-02
 
 [sc:vars]
 vlan_iface=em2
-vlan_tag=200
+vlan_tag=1000
 vlan_gw=172.16.255.254
 
 #
@@ -114,7 +105,6 @@ vlan_gw=172.16.255.254
 
 [nc:children]
 nc-emea-01
-nc-emea-02
 
 [nc:vars]
 vlan_iface=em2
@@ -132,18 +122,8 @@ nc-emea-01
 
 [emea01:vars]
 partition=emea-01
-vlan_tag=300
-vlan_gw=172.17.255.254
-
-[emea02:children]
-cc-emea-02
-sc-emea-02
-nc-emea-02
-
-[emea02:vars]
-partition=emea-02
-vlan_tag=301
-vlan_gw=172.18.255.254
+vlan_tag=1000
+vlan_gw=172.16.255.254
 
 #
 # ALL CLUSTERS AS ONE
@@ -151,4 +131,6 @@ vlan_gw=172.18.255.254
 
 [clusters:children]
 emea01
-emea02
+
+[clusters:vars]
+
