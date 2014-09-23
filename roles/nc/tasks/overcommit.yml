@@ -2,16 +2,10 @@
 # Tunes the NC
 #
 
-- name: Number of vCPU on the machine
-  debug: msg={{ ansible_processor_vcpus }}
-
 - name: Define vCPU overcommit
   shell: echo "{{ ansible_processor_vcpus }} * {{ cpu_overcommit }}" | bc
   register: nc_vcpu
   when: cpu_overcommit > 1
-
-- name: Debug calc overcommit
-  debug: msg={{ nc_vcpu.stdout }}
 
 - name: Apply overcommit
   lineinfile: regexp=MAX_CORES line=MAX_CORES\=\"{{ nc_vcpu.stdout }}\" dest=/etc/eucalyptus/eucalyptus.conf

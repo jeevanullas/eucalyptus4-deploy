@@ -2,13 +2,6 @@
 # UFS Registration
 #
 
-- name: Debug UFS IPs
-  debug: msg="{{ item }} => {{ hostvars[item]['ansible_' + hostvars[item]['vlan_iface'] + '.' + "%d"|format(vlan_tag)]['ipv4']['address'] }}" 
-  with_items: "{{ groups.ufs }}"
-  when:
-  - use_vlans
-  ignore_errors: true
-
 - name: Register UFS
   shell: euca_conf --register-service -T user-api -N {{ hostvars[item]['ufs_name'] }} -H "{{ hostvars[item]['ansible_' + hostvars[item]['vlan_iface'] + '.' + "%d"|format(vlan_tag)]['ipv4']['address'] }}" 
   with_items: "{{ groups.ufs }}"

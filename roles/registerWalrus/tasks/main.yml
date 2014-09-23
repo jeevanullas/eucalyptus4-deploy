@@ -2,10 +2,6 @@
 # Walrus Registration
 #
 
-- name: Debug Walrus IPs
-  debug: msg="{{ hostvars[item]['ansible_' + "%s.%d"|format(hostvars[item]['vlan_iface'], hostvars[item]['vlan_tag'])]['ipv4']['address'] }}" 
-  with_items: "{{ groups.walrus }}"
-
 - name: Register Walrus
   shell: euca_conf --register-walrus --partition walrus --host "{{ hostvars[item]['ansible_' + "%s.%d"|format(hostvars[item]['vlan_iface'], hostvars[item]['vlan_tag'])]['ipv4']['address'] }}" --component {{ hostvars[item]['walrus_name'] }}
   with_items: "{{ groups.walrus }}"

@@ -9,9 +9,6 @@
   - eucalyptus-imaging-worker-image
   - eucalyptus-load-balancer-image
 
-- name: Debug
-  debug: msg={{ hostvars[inventory_hostname]['ansible_' + java_iface] }}
-
 - name: CLC Java binding
   lineinfile: regexp=CLOUD_OPTS line=CLOUD_OPTS\=\"--bind-addr={{  hostvars[inventory_hostname]['ansible_' + java_iface]['ipv4']['address'] }}\" dest={{ euca_conf_path }}
 
@@ -29,9 +26,6 @@
 - name: Generate ssh-key on CLC
   user: generate_ssh_key=yes ssh_key_bits=4096 ssh_key_passphrase= name=root
   register: clc_public_key
-
-- name: Debug public key
-  debug: msg="{{ clc_public_key.ssh_public_key }}"
 
 - name: Deploy CLC public_key
   authorized_key: user=root state=present key="{{ clc_public_key.ssh_public_key }}"
