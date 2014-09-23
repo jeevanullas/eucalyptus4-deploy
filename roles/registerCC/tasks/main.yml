@@ -3,7 +3,10 @@
 #
 
 - name: Register CC
-  shell: euca_conf --register-cluster --partition {{ hostvars[item]['partition'] }} --component {{ hostvars[item]['cc_name'] }} --host "{{ hostvars[item]['ansible_' + "%s.%d"|format(cc_vnet_private,  hostvars[item]['vlan_tag'])]['ipv4']['address'] }}" 
+  shell: euca_conf --register-cluster --partition "{{ hostvars[item]['partition'] }}" --component "{{ hostvars[item]['cc_name'] }}" --host "{{ hostvars[item]['ansible_' + "%s.%d"|format(cc_vnet_private,  hostvars[item]['vlan_tag'])]['ipv4']['address'] }}" 
   with_items: "{{ groups.cc }}"
   when:
   - use_vlans
+  tags:
+  - cc
+  - regisration

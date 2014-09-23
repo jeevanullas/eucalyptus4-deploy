@@ -20,3 +20,6 @@
   - network_config
   notify:
   - network restart
+
+- name: Restart network
+  service: name=network state=restarted

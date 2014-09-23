@@ -3,58 +3,52 @@
 #
 
 - hosts: clusters
-- hosts: fe
+- hosts: java_fe
 
-- hosts:
-  - fe
-  - cc
-  - sc
+- hosts: all
   vars_files:
   - vars/main.yml
   - vars/networking.yml
-  vars:
-  - isNC: false
+  - vars/java.yml
   roles:
-  - vlanConfig
+  - setup
 
-- hosts: nc
+- hosts: all
   vars_files:
   - vars/main.yml
   - vars/networking.yml
-  vars:
-  - isNC: true
+  - vars/java.yml
   roles:
-  - vlanConfig
-  - bridgeConfig
+  - common
 
 - hosts: clc
   vars_files:
   - vars/main.yml
   - vars/networking.yml
+  - vars/java.yml
   vars:
   - java_iface: "{{ vlan_iface }}.{{ vlan_tag }}"
   roles:
-  - common
   - clc
 
 - hosts: ufs
   vars_files:
   - vars/main.yml
   - vars/networking.yml
+  - vars/java.yml
   vars:
   - java_iface: "{{ vlan_iface }}.{{ vlan_tag }}"
   roles:
-  - common
   - ufs
 
 - hosts: walrus
   vars_files:
   - vars/main.yml
   - vars/networking.yml
+  - vars/java.yml
   vars:
   - java_iface: "{{ vlan_iface }}.{{ vlan_tag }}"
   roles:
-  - common
   - walrus
 
 - hosts: clc
@@ -70,17 +64,16 @@
   - vars/main.yml
   - vars/networking.yml
   roles:
-  - common
   - cc
 
 - hosts: sc
   vars_files:
   - vars/main.yml
   - vars/networking.yml
+  - vars/java.yml
   vars:
   - java_iface: "{{ vlan_iface }}.{{ vlan_tag }}"
   roles:
-  - common
   - sc
 
 - hosts: clc
@@ -96,7 +89,6 @@
   - vars/main.yml
   - vars/networking.yml
   roles:
-  - common
   - nc
 
 - hosts: nc

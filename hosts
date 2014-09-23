@@ -14,38 +14,37 @@
 #
 
 [clc]
-emea-0
+nc-4
 
 [clc:vars]
-vlan_iface=eth1
+vlan_iface=em2
 vlan_ip=172.16.0.2/16
-java_iface=eth1
 
 #
 # WALRUS - UNIQUE !!
 #
 [walrus]
-emea-0 vlan_ip=172.16.0.3/16 walrus_name="walrus-prc"
+nc-4 vlan_ip=172.16.0.2/16 walrus_name="walrus-prc"
 
 #
 # User Facing Services - ufs_name MUST BE UNIQUE
 #
 [ufs]
-emea-0 vlan_ip=172.16.0.4/16 ufs_name=EMEA-01
+nc-4 vlan_ip=172.16.0.2/16 ufs_name=EMEA-01
 
 #
 # CC definition - Change name as pleases
 # cc_name MUST BE UNIQUE | 1 CC per name
 #
 [cc-emea-01]
-emea-0 vlan_ip=172.16.0.5/16 cc_name=cc-emea-01 cc_vnet_private=em2.1000
+nc-4 vlan_ip=172.16.0.2/16 cc_name=cc-emea-01 cc_vnet_private=em2.200
 
 #
 # Storage Controllers
 # sc_name MUST BE UNIQUE
 #
 [sc-emea-01]
-emea-0 vlan_ip=172.16.0.6/16 sc_name=sc-emea-01 vlan_tag=1000 vlan_iface=em2
+nc-4 vlan_ip=172.16.0.2/16 sc_name=sc-emea-01 vlan_iface=em2
 
 
 #
@@ -67,9 +66,10 @@ walrus
 sc
 
 [java_fe:vars]
-vlan_tag=1000
+vlan_tag=200
 vlan_iface=em2
 vlan_gw=172.16.255.254
+java_iface=em2.200
 
 #
 # Cluster Controllers
@@ -91,9 +91,6 @@ vlan_iface=em2
 sc-emea-01
 
 [sc:vars]
-vlan_iface=em2
-vlan_tag=1000
-vlan_gw=172.16.255.254
 
 #
 # Node Controllers
@@ -119,7 +116,7 @@ nc-emea-01
 
 [emea01:vars]
 partition=emea-01
-vlan_tag=1000
+vlan_tag=200
 vlan_gw=172.16.255.254
 
 #

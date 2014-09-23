@@ -2,11 +2,15 @@
 # Cloud components
 #
 
-- name: Setup Storage Controller
-  yum: name={{ item }} state=present
-  with_items:
-  - eucalyptus-sc
+- name: Authorize CLC SSH Key
+  authorized_key: user=root key="{{ lookup('file', '/var/tmp/clc-pub-key') }}"
+  tags:
+  - config
+  - ufs
+  - clc_keys
 
-- name: Cloud Java components binding
-  lineinfile: regexp=CLOUD_OPTS line=CLOUD_OPTS\=\"--bind-addr={{  hostvars[inventory_hostname]['ansible_' + java_iface]['ipv4']['address'] }}\" dest={{ euca_conf_path }}
-
+- name: Start SC
+  service: name=eucalyptus-cloud state=started
+  tags:
+  - sc
+  - run

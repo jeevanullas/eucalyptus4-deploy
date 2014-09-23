@@ -4,7 +4,13 @@
 
 - name: Start the NC
   service: name=eucalyptus-nc state=started
+  tags:
+  - nc
+  - run
 
 - name: Start eucaned
   service: name=eucanetd state=started
   when: networking_mode == "EDGE"
+  tags:
+  - nc
+  - run

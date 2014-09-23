@@ -2,13 +2,15 @@
 # Walrus config
 #
 
-- name: Setup Walrus
-  yum: name={{ item }} state=present
-  with_items:
-  - eucalyptus-walrus
-
-- name: Walrus Java binding
-  lineinfile: regexp=CLOUD_OPTS line=CLOUD_OPTS\=\"--bind-addr={{  hostvars[inventory_hostname]['ansible_' + java_iface]['ipv4']['address'] }}\" dest={{ euca_conf_path }}
-
 - name: Authorize CLC SSH Key
   authorized_key: user=root key="{{ lookup('file', '/var/tmp/clc-pub-key') }}"
+  tags:
+  - walrus
+  - run
+  - clc_keys
+
+- name: Start Walrus
+  service: name=eucalyptus-cloud state=started
+  tags:
+  - walrus
+  - run

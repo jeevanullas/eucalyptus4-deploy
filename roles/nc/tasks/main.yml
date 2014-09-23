@@ -2,41 +2,44 @@
 # All NCs common
 #
 
-- name: Setup NC packages
-  yum: name=eucalyptus-nc state=present
-  tags:
-  - packages
-
 - name: Setup eucanetd
   yum: name=eucanetd state=present
   when:
   - networking_mode == "EDGE"
   tags:
   - packages
+  - nc
 
-- name: Set NC eucalyptus.conf
-  template: src=eucalyptus.conf.j2 dest=/etc/eucalyptus/eucalyptus.conf
+- name: NC EDGE config
+  include: edge.yml
+  when:
+  - networking_mode == "EDGE"
   tags:
   - init_config
+  - nc
 
 - name: Authorize CC SSH Key
-  authorized_key: user=root key="{{ lookup('file', '/var/tmp/cc-' + hostvars[inventory_hostname]['partition'] + '.pem') }}"
+  authorized_key: user=root key="{{ lookup('file', '/var/tmp/cc-' + hostvars[inventory_hostname]['partition']) }}"
   tags:
   - config
+  - cc_keys
+  - nc
 
 - name: Start libvirtd
   service: name=libvirtd state=started
   tags:
   - nc_cleanup
+  - nc
 
 - name: Delete default libvirt network
   shell: virsh net-destroy default ; virsh net-undefine default
   ignore_errors: yes
   tags:
   - nc_cleanup
+  - nc
 
 - name: Restart libvirtd
   service: name=libvirtd state=restarted
   tags:
   - nc_cleanup
-
+  - nc

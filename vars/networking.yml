@@ -13,7 +13,7 @@ vlan_routes:
 
 ## CLOUD NETWORK CONFIGURATION ##
 
-networking_mode: MANAGED-NOVLAN
+networking_mode: EDGE
 edge_using_private: true
 
 managed_addrpernet: 32

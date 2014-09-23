@@ -12,3 +12,6 @@
   - partition == "{{ hostvars[item]['partition'] }}"
   - nc_use_bridges
   - use_vlans
+  tags:
+  - nc
+  - registration

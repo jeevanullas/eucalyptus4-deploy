@@ -1,26 +1,6 @@
-#
+
 # All components common tasks
 #
-
-- name: Setup repositories
-  yum: name={{ item }} state=present
-  with_items:
-  - "{{ euca_repo_url }}"
-  - "{{ euca2ools_repo_url }}"
-  - "{{ epel_repo_url }}"
-  - "{{ elrepo_repo_url }}"
-  tags:
-  - packages
-
-- name: Setup ntpd
-  yum: name=ntp state=present
-  tags:
-  - packages
-
-- name: Enable ntpd service
-  service: name=ntpd state=restarted
-  tags:
-  - packages
 
 - name : Configure VLANs
   include: vlan_config.yml
@@ -43,13 +23,18 @@
   tags:
   - network_config
 
+- name: Ensure network loaded
+  service: name=network state=restarted
+  tags:
+  - network_config
+
 - name: Define vCPU overcommit
   shell: echo "{{ ansible_processor_vcpus }} * {{ cpu_overcommit }}" | bc
   register: nc_vcpu
   tags:
   - init_config
   when:
-  - groups == 'nc'
+  - inventory_hostname in goups.nc
 
 - name: Set eucalyptus config
   template: src=eucalyptus.conf.j2 dest=/etc/eucalyptus/eucalyptus.conf

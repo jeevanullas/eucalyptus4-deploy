@@ -100,8 +100,8 @@ USE_VIRTIO_NET="1"
 # The number of virtual CPU cores that Eucalyptus is allowed to allocate
 # to instances.  The default value of 0 allows Eucalyptus to use all
 # CPU cores on the system.
-{% if groups == 'nc' %}
-MAX_CORES="{{  nc_vcpu.stdout }}"
+{% if inventory_hostname in groups['nc'] %}
+MAX_CORES="{{  nc_vcpu.stdout|int }}"
 {% else %}
 #MAX_CORES="0"
 {% endif %}

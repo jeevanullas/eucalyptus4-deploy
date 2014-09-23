@@ -35,3 +35,6 @@
   - not use_vlans
   notify:
   - network restart
+
+- name: Network restart
+  service: name=network state=restarted
