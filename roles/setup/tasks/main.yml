@@ -1,0 +1,90 @@
+#
+# All in one setup
+#
+
+- name: Setup repositories
+  yum: name={{ item }} state=present
+  with_items:
+  - "{{ euca_repo_url }}"
+  - "{{ euca2ools_repo_url }}"
+  - "{{ epel_repo_url }}"
+  - "{{ elrepo_repo_url }}"
+  tags:
+  - packages
+
+- name: Setup ntpd
+  yum: name=ntp state=present
+  tags:
+  - packages
+
+- name: Enable ntpd service
+  service: name=ntpd state=restarted
+  tags:
+  - packages
+
+- name: Setup CLC packages
+  yum: name="{{ item }}" state=latest
+  with_items:
+  - eucalyptus-cloud
+  - eucalyptus-imaging-worker-image
+  - eucalyptus-load-balancer-image
+  when:
+  - inventory_hostname in groups.clc
+  tags:
+  - clc
+  - packages
+
+- name: Setup UFS package
+  yum: name="{{ item }}" state=latest
+  with_items:
+  - eucalyptus-cloud
+  - eucalyptus-osg
+  when:
+  - inventory_hostname in groups.ufs
+  tags:
+  - ufs
+  - packages
+
+- name: Setup SC package
+  yum: name="{{ item }}" state=latest
+  with_items:
+  - eucalyptus-sc
+  when:
+  - inventory_hostname in groups.sc
+  tags:
+  - sc
+  - packages
+
+- name: Setup Walrus package
+  yum: name="{{ item }}" state=latest
+  with_items:
+  - eucalyptus-walrus
+  when:
+  - inventory_hostname in groups.walrus
+  tags:
+  - walrus
+  - packages
+
+- name: Setup NC packages
+  yum: name="{{ item }}" state=latest
+  with_items:
+  - eucalyptus-nc
+  - tcpdump
+  - nmap
+  when:
+  - inventory_hostname in groups.nc
+  tags:
+  - nc
+  - packages
+
+- name: Setup CC packages
+  yum: name="{{ item }}" state=latest
+  with_items:
+  - eucalyptus-cc
+  - tcpdump
+  - nmap
+  when:
+  - inventory_hostname in groups.cc
+  tags:
+  - cc
+  - packages
