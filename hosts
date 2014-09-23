@@ -14,46 +14,45 @@
 #
 
 [clc]
-odc-c-30
+emea-0
 
 [clc:vars]
-vlan_iface=em2
+vlan_iface=eth1
 vlan_ip=172.16.0.2/16
+java_iface=eth1
 
 #
 # WALRUS - UNIQUE !!
 #
 [walrus]
-odc-c-32 vlan_ip=172.16.0.3/16 walrus_name="walrus-prc"
+emea-0 vlan_ip=172.16.0.3/16 walrus_name="walrus-prc"
 
 #
 # User Facing Services - ufs_name MUST BE UNIQUE
 #
 [ufs]
-odc-c-33 vlan_ip=172.16.0.4/16 ufs_name=EMEA-01
+emea-0 vlan_ip=172.16.0.4/16 ufs_name=EMEA-01
 
 #
 # CC definition - Change name as pleases
 # cc_name MUST BE UNIQUE | 1 CC per name
 #
 [cc-emea-01]
-odc-c-34 vlan_ip=172.16.0.5/16 cc_name=cc-emea-01 cc_vnet_private=em2.1000
+emea-0 vlan_ip=172.16.0.5/16 cc_name=cc-emea-01 cc_vnet_private=em2.1000
 
 #
 # Storage Controllers
 # sc_name MUST BE UNIQUE
 #
 [sc-emea-01]
-odc-c-35 vlan_ip=172.16.0.6/16 sc_name=sc-emea-01 vlan_tag=1000 vlan_iface=em2
+emea-0 vlan_ip=172.16.0.6/16 sc_name=sc-emea-01 vlan_tag=1000 vlan_iface=em2
 
 
 #
 # Node Controllers
 #
 [nc-emea-01]
-odc-c-36 vlan_ip=172.16.0.7/16
-odc-c-39 vlan_ip=172.16.0.8/16
-
+nc-5 vlan_ip=172.16.0.44/16
 
 #
 # Front-End Services
@@ -61,12 +60,13 @@ odc-c-39 vlan_ip=172.16.0.8/16
 #
 
 
-[fe:children]
+[java_fe:children]
 clc
 ufs
 walrus
+sc
 
-[fe:vars]
+[java_fe:vars]
 vlan_tag=1000
 vlan_iface=em2
 vlan_gw=172.16.255.254

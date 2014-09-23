@@ -1,0 +1,21 @@
+{% if inventory_hostname in groups['nc'] %}
+{% if use_vlans %}
+NAME={{ nc_bridge_prefix }}{{ vlan_tag }}
+DEVICE={{ nc_bridge_prefix }}{{ vlan_tag }}
+IPADDR={{ ip.stdout }}
+PREFIX={{ prefix.stdout }}
+{% else %}
+NAME={{ nc_bridge_prefix }}{{ nc_bridge_id }}
+DEVICE={{ nc_bridge_prefix }}{{ nc_bridge_id }}
+{% set vnet = 'ansible_' + nc_vnet_private %}
+IPADDR={{ vnet.ipv4.address }}
+NETMASK={{ vnet.ipv4.netmask }}
+{% endif %}
+IPV6INIT=no
+IPV6AUTOCONF=no
+DELAY=0
+STP=yes
+ONBOOT=yes
+BOOTPROTO="static"
+TYPE="Bridge"
+{% endif %}

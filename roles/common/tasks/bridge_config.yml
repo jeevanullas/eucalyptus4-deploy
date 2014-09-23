@@ -1,0 +1,37 @@
+#
+# Create briges on NCs
+#
+
+- name: Get IP
+  shell: echo {{ vlan_ip }} | cut -d '/' -f 1
+  register: ip
+  tags:
+  - network_config
+  when:
+  - use_vlans
+
+- name: Get prefix
+  shell: echo {{ vlan_ip }} | cut -d '/' -f 2
+  register: prefix
+  tags:
+  - network_config
+  when:
+  - use_vlans
+
+- name: Creates the Bridge config file | VLAN
+  template: src=bridge.j2 dest="{{ netcfg_path }}/ifcfg-{{ nc_bridge_prefix }}{{ vlan_tag }}"
+  tags:
+  - network_config
+  when:
+  - use_vlans
+  notify:
+  - network restart
+
+- name: Creates the Bridge config file | NOVLAN
+  template: src=bridge.j2 dest="{{ netcfg_path }}/ifcfg-{{ nc_bridge_prefix }}{{ nc_bridge_prefix }}"
+  tags:
+  - network_config
+  when:
+  - not use_vlans
+  notify:
+  - network restart

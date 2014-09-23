@@ -9,12 +9,14 @@
 # In case of multi-vlan & multi-subnet, adds these routes on hosts:
 vlan_routes:
 - 172.16.0.0/16
-
+- 172.17.0.0/16
 
 ## CLOUD NETWORK CONFIGURATION ##
 
-networking_mode: EDGE
+networking_mode: MANAGED-NOVLAN
 edge_using_private: true
+
+managed_addrpernet: 32
 
 use_vlans: true
 flush_if_exists: true
@@ -31,6 +33,7 @@ instance_dns_servers:
 # Cloud Public IPs (EIPs)
 pub_ips:
 - "10.104.6.1-10.104.6.64"
+- "10.104.6.66-10.104.6.127"
 
 # Cluster specific networking definition
 clusters:
@@ -40,10 +43,13 @@ clusters:
 
 # NC #
 nc_vnet_public: em1
+nc_vnet_private: em2
 nc_use_bridges: true
 nc_bridge_prefix: eucabr
+nc_bridge_id: 1
 
 # CC #
 cc_vnet_public: em1
 cc_vnet_bridge: false
 cc_vnet_private: em2
+

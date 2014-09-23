@@ -1,0 +1,6 @@
+#
+# Handlers for common
+#
+
+- name: network restart
+  service: name=network state=restarted

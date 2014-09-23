@@ -9,9 +9,49 @@
   - "{{ euca2ools_repo_url }}"
   - "{{ epel_repo_url }}"
   - "{{ elrepo_repo_url }}"
+  tags:
+  - packages
 
 - name: Setup ntpd
   yum: name=ntp state=present
+  tags:
+  - packages
 
 - name: Enable ntpd service
   service: name=ntpd state=restarted
+  tags:
+  - packages
+
+- name : Configure VLANs
+  include: vlan_config.yml
+  when: 
+  - use_vlans
+  - not networking_mode == "MANAGED"
+  tags:
+  - network_config
+  
+- name: Configure NC bridges
+  include: bridge_config.yml
+  when:
+  - not networking_mode == "MANAGED"
+  - inventory_hostname in groups.nc
+  tags:
+  - network_config
+
+- name: Configure routes
+  include: routes_config.yml
+  tags:
+  - network_config
+
+- name: Define vCPU overcommit
+  shell: echo "{{ ansible_processor_vcpus }} * {{ cpu_overcommit }}" | bc
+  register: nc_vcpu
+  tags:
+  - init_config
+  when:
+  - groups == 'nc'
+
+- name: Set eucalyptus config
+  template: src=eucalyptus.conf.j2 dest=/etc/eucalyptus/eucalyptus.conf
+  tags:
+  - init_config

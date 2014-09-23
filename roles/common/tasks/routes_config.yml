@@ -1,0 +1,44 @@
+#
+# Routes config
+#
+
+- name: Add the defined routes
+  shell: ip route add {{ item }} via {{ vlan_gw }}
+  with_items: "{{ vlan_routes }}"
+  ignore_errors: true
+  tags:
+  - network_config
+
+- name: Get the routes status
+  shell: ip route | grep via | grep "{{ vlan_gw }}"
+  register: routes_vlan
+  ignore_errors: true
+  tags:
+  - network_config
+
+- name: Generate static routes config file
+  template: src=routes.j2 dest="{{ netcfg_path }}/route-{{ vlan_iface }}"
+  tags:
+  - network_config
+  when:
+  - inventory_hostname in groups.java_fe
+  - inventory_hostname in groups.cc
+  - use_vlans
+ 
+- name: Generate static routes config file
+  template: src=routes.j2 dest="{{ netcfg_path }}/route-{{ nc_bridge_prefix }}{{ vlan_tag }}"
+  tags:
+  - network_config
+  when:
+  - inventory_hostname in groups.nc
+  - use_vlans
+  - not networking_mode == "MANAGED"
+
+- name: Generate static routes config file
+  template: src=routes.j2 dest="{{ netcfg_path }}/route-{{ nc_bridge_prefix }}{{ bc_bridge_id }}"
+  tags:
+  - network_config
+  when:
+  - inventory_hostname in groups.nc
+  - not use_vlans
+  - not networking_mode == "MANAGED"

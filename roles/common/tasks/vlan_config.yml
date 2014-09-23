@@ -1,0 +1,22 @@
+#
+# VLANs configuration
+#
+
+- name: Get IP
+  shell: echo {{ vlan_ip }} | cut -d '/' -f 1
+  register: ip
+  tags:
+  - network_config
+
+- name: Get prefix
+  shell: echo {{ vlan_ip }} | cut -d '/' -f 2
+  register: prefix
+  tags:
+  - network_config
+
+- name: Create the VLAN config file
+  template: src=vlan.j2 dest="{{ netcfg_path }}/ifcfg-{{ vlan_iface }}.{{ vlan_tag }}"
+  tags:
+  - network_config
+  notify:
+  - network restart

@@ -1,21 +1,42 @@
 #
-# Building NC config depending on the mode
+# All NCs common
 #
 
-- name: NC common
-  include: nc_common.yml
+- name: Setup NC packages
+  yum: name=eucalyptus-nc state=present
+  tags:
+  - packages
 
-- name: "Deploying NC in EDGE mode"
-  include: edge.yml
-  when: networking_mode == "EDGE"
+- name: Setup eucanetd
+  yum: name=eucanetd state=present
+  when:
+  - networking_mode == "EDGE"
+  tags:
+  - packages
 
-- name: "Deploy NC in MANAGED mode"
-  include: managed.yml
-  when: networking_mode == "MANAGED"
+- name: Set NC eucalyptus.conf
+  template: src=eucalyptus.conf.j2 dest=/etc/eucalyptus/eucalyptus.conf
+  tags:
+  - init_config
 
-- name: "Deploy NC in MANAGED-NOVLAN mode"
-  include: managed_novlan.yml
-  when: networking_mode == "MANAGED-NOVLAN"
+- name: Authorize CC SSH Key
+  authorized_key: user=root key="{{ lookup('file', '/var/tmp/cc-' + hostvars[inventory_hostname]['partition'] + '.pem') }}"
+  tags:
+  - config
 
-- name: Overcommit
-  include: overcommit.yml
+- name: Start libvirtd
+  service: name=libvirtd state=started
+  tags:
+  - nc_cleanup
+
+- name: Delete default libvirt network
+  shell: virsh net-destroy default ; virsh net-undefine default
+  ignore_errors: yes
+  tags:
+  - nc_cleanup
+
+- name: Restart libvirtd
+  service: name=libvirtd state=restarted
+  tags:
+  - nc_cleanup
+
