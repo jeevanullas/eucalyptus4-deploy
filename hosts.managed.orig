@@ -1,7 +1,9 @@
+#####################################################################################
 #
 # Eucalyptus 4 - Deploy with Ansible
 #
 
+#####################################################################################
 ## VARIABLES DEFINITIONS ##
 # Recommended changes :
 # - vlan_iface : NIC where VLAN gets created
@@ -10,57 +12,56 @@
 # - partition : name of the AZ
 
 #####################################################################################
-# CLC HOST  - UNIQUE !!
+# CLC HOST - UNIQUE !!
 #
 [clc]
 odc-c-32
 
 [clc:vars]
-vlan_iface=em2
-vlan_ip=172.16.0.2/16
 
 #####################################################################################
 # WALRUS - UNIQUE !!
 #
 [walrus]
-odc-c-33 vlan_ip=172.16.0.2/16 walrus_name="walrus-prc"
+odc-c-33
+
+[walrus:vars]
+walrus_name="walrus-prc"
 
 #####################################################################################
 # User Facing Services - ufs_name MUST BE UNIQUE
 #
 [ufs]
-odc-c-33 vlan_ip=172.16.0.2/16 ufs_name=EMEA-01
+odc-c-33 ufs_name=PRC-01
 
 #####################################################################################
 # CC definition - Change name as pleases
 # cc_name MUST BE UNIQUE | 1 CC per name
 #
-[cc-emea-01]
-odc-c-34 vlan_ip=172.16.0.3/16 cc_name=cc-emea-01 cc_vnet_private=em2.1000
+[cc-prc-01]
+odc-c-34 cc_name=cc-prc-01
 
 #####################################################################################
 # Storage Controllers
 # sc_name MUST BE UNIQUE
 #
-[sc-emea-01]
-odc-c-34 vlan_ip=172.16.0.3/16 sc_name=sc-emea-01 vlan_iface=em2
+[sc-prc-01]
+odc-c-34 sc_name=sc-prc-01
 
 
 #####################################################################################
 # Node Controllers
 #
-[nc-emea-01]
-odc-c-35 vlan_ip=172.16.0.44/16
-odc-c-36 vlan_ip=172.16.0.44/16
-odc-c-39 vlan_ip=172.16.0.44/16
+[nc-prc-01]
+odc-c-35
+odc-c-36
+odc-c-39
 
 
 #####################################################################################
 # Front-End Services
 # CLC / UFS / Walrus (JAVA Components)
 #
-
-
 [java_fe:children]
 clc
 ufs
@@ -74,9 +75,8 @@ java_iface=em1
 # Cluster Controllers
 # Allows to manage CC tasks for any AZ cluster | CHANGE only if needed
 #
-
 [cc:children]
-cc-emea-01
+cc-prc-01
 
 [cc:vars]
 cc_vnet_public: em1
@@ -84,22 +84,12 @@ cc_vnet_bridge: false
 cc_vnet_private: em2
 
 #####################################################################################
-# Storage Controllers
-# Allows to manage SC tasks for any AZ cluster | CHANGE only if needed
-#
-
-[sc:children]
-sc-emea-01
-
-[sc:vars]
-
-#####################################################################################
 # Node Controllers
 # Allows to manage NCs tasks for any Node | CHANGE name only if needed
 #
 
 [nc:children]
-nc-emea-01
+nc-prc-01
 
 [nc:vars]
 nc_vnet_public: em1
@@ -107,6 +97,15 @@ nc_vnet_private: em2
 nc_bridge_prefix: eucabr
 nc_bridge_id: 1
 
+#####################################################################################
+# Storage Controllers
+# Allows to manage SC tasks for any AZ cluster | CHANGE only if needed
+#
+
+[sc:children]
+sc-prc-01
+
+[sc:vars]
 
 #####################################################################################
 # CLUSTER DEFINITION
@@ -114,20 +113,20 @@ nc_bridge_id: 1
 # MANDATORY to keep CC/SC/NC to form a complete cluster
 #
 
-[emea01:children]
-cc-emea-01
-sc-emea-01
-nc-emea-01
+[prc01:children]
+cc-prc-01
+sc-prc-01
+nc-prc-01
 
-[emea01:vars]
-partition=emea-01
+[prc01:vars]
+partition=prc-01
 
 #####################################################################################
 # ALL CLUSTERS AS ONE
 #
 
 [clusters:children]
-emea01
+prc01
 
 [clusters:vars]
 
