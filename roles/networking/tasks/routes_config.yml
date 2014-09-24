@@ -29,7 +29,7 @@
   - inventory_hostname in groups.cc
   - use_vlans
  
-- name: Generate static routes config file
+- name: Generate static routes config file | VLAN
   template: src=routes.j2 dest="{{ netcfg_path }}/route-{{ hostvars[inventory_hostname]['bridge_prefix'] }}{{ hostvars[inventory_hostname]['vlan_tag'] }}"
   tags:
   - network_config
@@ -38,14 +38,14 @@
   - use_vlans
   - not networking_mode == "MANAGED"
 
-- name: Generate static routes config file
+- name: Generate static routes config file | NOVLAN
   template: src=routes.j2 dest="{{ netcfg_path }}/route-{{ hostvars[inventory_hostname]['bridge_prefix'] }}{{ hostvars[inventory_hostname]['bridge_id'] }}"
   tags:
   - network_config
   when:
   - inventory_hostname in groups.nc
   - not use_vlans
-  - not networking_mode == "MANAGED"
+  - networking_mode == "EDGE"
 
 - name: add NOZEROCONF to all networking files
   shell: for i in `ls /etc/sysconfig/network-scripts/ | egrep ifcfg-'(em|eth|br)'`; do echo "NOZEROCONF=yes" >> /etc/sysconfig/network-scripts/$i ; done

@@ -6,7 +6,6 @@
   include: vlan_config.yml
   when: 
   - use_vlans
-  - not networking_mode == "MANAGED"
   tags:
   - network_config
   

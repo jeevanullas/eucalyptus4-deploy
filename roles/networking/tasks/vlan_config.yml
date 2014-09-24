@@ -18,8 +18,3 @@
   template: src=vlan.j2 dest="{{ netcfg_path }}/ifcfg-{{ vlan_iface }}.{{ vlan_tag }}"
   tags:
   - network_config
-  notify:
-  - network restart
-
-- name: Restart network
-  service: name=network state=restarted
