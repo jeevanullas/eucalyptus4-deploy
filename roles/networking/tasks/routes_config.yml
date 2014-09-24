@@ -8,6 +8,8 @@
   ignore_errors: true
   tags:
   - network_config
+  when:
+  - use_vlans
 
 - name: Get the routes status
   shell: ip route | grep via | grep "{{ vlan_gw }}"
@@ -15,6 +17,8 @@
   ignore_errors: true
   tags:
   - network_config
+  when:
+  - use_vlans
 
 - name: Generate static routes config file
   template: src=routes.j2 dest="{{ netcfg_path }}/route-{{ vlan_iface }}"
