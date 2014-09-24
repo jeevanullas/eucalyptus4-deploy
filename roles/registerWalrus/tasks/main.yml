@@ -3,8 +3,19 @@
 #
 
 - name: Register Walrus | VLAN
-  shell: euca_conf --register-walrus --partition walrus --host "{{ hostvars[item]['ansible_' + "%s.%d"|format(hostvars[item]['vlan_iface'], hostvars[item]['vlan_tag'])]['ipv4']['address'] }}" --component {{ hostvars[item]['walrus_name'] }}
+  shell: euca_conf --register-walrus --partition walrus --host "{{ hostvars[item]['ansible_' + "%s.%d"|format(hostvars[item]['vlan_iface'], hostvars[item]['vlan_tag'])]['ipv4']['address'] }}" --component "{{ hostvars[item]['walrus_name'] }}"
   with_items: "{{ groups.walrus }}"
   ignore_errors: true
   tags:
   - registration
+  when:
+  - use_vlans
+
+- name: Register Walrus | NO VLAN
+  shell: euca_conf --register-walrus --partition walrus --host "{{ hostvars[item]['ansible_' + java_iface]['ipv4']['address'] }}" --component "{{ hostvars[item]['walrus_name'] }}"
+  with_items: "{{ groups.walrus }}"
+  ignore_errors: true
+  tags:
+  - registration
+  when:
+  - not use_vlans

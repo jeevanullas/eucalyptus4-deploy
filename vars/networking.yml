@@ -12,12 +12,14 @@ vlan_routes:
 
 ## CLOUD NETWORK CONFIGURATION ##
 
-networking_mode: EDGE
-edge_using_private: true
+networking_mode: MANAGED
+
+use_vlans: false
+edge_using_private: false
+nc_use_bridges: false
 
 managed_addrpernet: 32
 
-use_vlans: true
 flush_if_exists: true
 
 
@@ -36,14 +38,13 @@ pub_ips:
 
 # Cluster specific networking definition
 clusters:
-- {"Name": "emea-01", "MacPrefix": "d0:0d", "Subnet": { "Name": "172.16.0.0", "Subnet": "172.16.0.0", "Netmask": "255.255.0.0", "Gateway": "172.16.255.254"}, "PrivateIps": ["172.16.1.0-172.16.254.254"]}
+- {"Name": "emea-01", "MacPrefix": "d0:0d", "Subnet": { "Name": "172.33.0.0", "Subnet": "172.33.0.0", "Netmask": "255.255.0.0", "Gateway": "172.33.255.254"}, "PrivateIps": ["172.16.1.0-172.16.254.254"]}
 
 ## BACKEND IFACES DEFINITION ##
 
 # NC #
 nc_vnet_public: em1
 nc_vnet_private: em2
-nc_use_bridges: true
 nc_bridge_prefix: eucabr
 nc_bridge_id: 1
 

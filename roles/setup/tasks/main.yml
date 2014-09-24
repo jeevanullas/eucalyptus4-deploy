@@ -13,7 +13,7 @@
   - packages
 
 - name: Use Eucalyptus local repositories
-  lineinfile: regexp=mirrorlist line="{{ euca_local_repo_url }}" dest="{{ euca_repo_file }}"
+  lineinfile: regexp=mirrorlist line="baseurl={{ euca_local_repo_url }}" dest="{{ euca_repo_file }}"
   tags:
   - packages
   - init_config
@@ -21,7 +21,7 @@
   - euca_use_local_repo
 
 - name: Use euca2ools local repositories
-  lineinfile: regexp=mirrorlist line="{{ euca2ools_local_repo_url }}" dest="{{ euca2ools_repo_file }}"
+  lineinfile: regexp=mirrorlist line="baseurl={{ euca2ools_local_repo_url }}" dest="{{ euca2ools_repo_file }}"
   tags:
   - packages
   - init_config

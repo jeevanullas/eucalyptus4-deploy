@@ -10,3 +10,13 @@
   ignore_errors: true
   tags:
   - registration
+
+- name: Register UFS | NO VLAN
+  shell: euca_conf --register-service -T user-api -N "{{ hostvars[item]['ufs_name'] }}" -H "{{ hostvars[item]['ansible_' + java_iface]['ipv4']['address'] }}" 
+  with_items: "{{ groups.ufs }}"
+  when:
+  - not use_vlans
+  ignore_errors: true
+  tags:
+  - registration
+  - ufs

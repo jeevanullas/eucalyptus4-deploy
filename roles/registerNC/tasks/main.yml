@@ -5,7 +5,7 @@
 - name: Start CC service
   service: name=eucalyptus-cc state=started
 
-- name: Register all NCs
+- name: Register all NCs | bridge VLAN
   shell: euca_conf --register-nodes "{{ hostvars[item]['ansible_' + "%s%d"|format(nc_bridge_prefix, hostvars[item]['vlan_tag'])]['ipv4']['address'] }}"
   with_items: "{{ groups.nc }}"
   when: 
@@ -13,5 +13,23 @@
   - nc_use_bridges
   - use_vlans
   tags:
-  - nc
-  - registration
+  - nc_registration
+
+- name: Register all NCs | bridge NOVLAN
+  shell: euca_conf --register-nodes "{{ hostvars[item]['ansible_' + "%s%d"|format(nc_bridge_prefix, nc_bridge_id]['ipv4']['address'] }}"
+  with_items: "{{ groups.nc }}"
+  when: 
+  - partition == "{{ hostvars[item]['partition'] }}"
+  - nc_use_bridges
+  - not use_vlans
+  tags:
+  - nc_registration
+
+- name: Register all NCs | MANAGED mode
+  shell: euca_conf --register-nodes "{{ hostvars[item]['ansible_' + nc_vnet_private]['ipv4']['address'] }}"
+  with_items: "{{ groups.nc }}"
+  when: 
+  - partition == "{{ hostvars[item]['partition'] }}"
+  - networking_mode == "MANAGED"
+  tags:
+  - nc_registration

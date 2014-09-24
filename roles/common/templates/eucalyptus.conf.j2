@@ -191,7 +191,25 @@ METADATA_USE_VM_PRIVATE="N"
 # The name of the network interface that is on the same network as
 # the NCs. The default is "eth0".
 # Networking modes: Managed, Managed (No VLAN)
+{% if networking_mode == "MANAGED" %}
+{% if inventory_hostname in groups['nc'] %}
 VNET_PRIVINTERFACE="{{ nc_vnet_private }}"
+{% elif inventory_hostname in groups['cc'] %}
+VNET_PRIVINTERFACE="{{ cc_vnet_private }}"
+{% endif %}
+{% elif networking_mode == "MANAGED-NOVLAN" %}
+{% if inventory_hostname in groups['nc'] %}
+VNET_PRIVINTERFACE="{{ nc_vnet_private }}"
+{% elif inventory_hostname in groups['cc'] %}
+VNET_PRIVINTERFACE="{{ cc_vnet_private }}"
+{% endif %}
+{% elif networking_mode == "EDGE" %}
+{% if inventory_hostname in groups['nc'] %}
+VNET_PRIVINTERFACE="{{ nc_vnet_private }}"
+{% elif inventory_hostname in groups['cc'] %}
+VNET_PRIVINTERFACE="{{ cc_vnet_private }}"
+{% endif %}
+{% endif %}
 
 # On a CC, this is the name of the network interface that is connected
 # to the "public" network.  When tunnelling is enabled, this must be
@@ -201,16 +219,38 @@ VNET_PRIVINTERFACE="{{ nc_vnet_private }}"
 # On an NC, this is the name of the network interface that is connected
 # to the same network as the CC.  The default is "eth0".
 # Networking modes: Edge, Managed
-VNET_PUBINTERFACE="{{ nc_vnet_public }}"
+{% if networking_mode == "MANAGED" %}
+{% if inventory_hostname in groups['nc'] %}
+VNET_PUBINTERFACE="{{ nc_vnet_private }}"
+{% elif inventory_hostname in groups['cc'] %}
+VNET_PUBINTERFACE="{{ cc_vnet_public }}"
+{% endif %}
+{% elif networking_mode == "MANAGED-NOVLAN" %}
+{% if inventory_hostname in groups['nc'] %}
+VNET_PUBINTERFACE="{{ nc_vnet_private }}"
+{% elif inventory_hostname in groups['cc'] %}
+VNET_PUBINTERFACE="{{ cc_vnet_public }}"
+{% endif %}
+{% elif networking_mode == "EDGE" %}
+{% if inventory_hostname in groups['nc'] %}
+VNET_PUBINTERFACE="{{ nc_vnet_private }}"
+{% elif inventory_hostname in groups['cc'] %}
+VNET_PUBINTERFACE="{{ cc_vnet_private }}"
+{% endif %}
+{% endif %}
 
 # On an NC, this is the name of the bridge interface to which instances'
 # network interfaces should attach.  A physical interface that can reach
 # the CC must be attached to this bridge.
 # Networking modes: Edge, Managed (No VLAN)
+{% if networking_mode == ("EDGE" or "MANAGED-NOVLAN") %}
 {% if use_vlans %}
 VNET_BRIDGE="{{ "%s%d" |format(nc_bridge_prefix, vlan_tag)}}"
 {% else %}
 VNET_BRIDGE="{{ "%s%d" |format(nc_bridge_prefix, nc_bridge_id)}}"
+{% endif %}
+{% else %}
+VNET_BRIDGE="br0"
 {% endif %}
 
 # A space-separated list of individual and/or hyphenated ranges of public
@@ -229,12 +269,14 @@ VNET_PUBLICIPS="{% for range in pub_ips %}{{ range }} {% endfor %}"
 #VNET_SUBNET="192.168.0.0"
 #VNET_NETMASK="255.255.0.0"
 {% else %}
+{% if inventory_hostname in groups['cc'] or inventory_hostname in groups['nc'] %}
 {% for cluster in clusters %}
 {% if cluster['Name'] == hostvars[inventory_hostname]['partition'] %}
 VNET_SUBNET="{{ cluster['Subnet']['Subnet'] }}"
 VNET_NETMASK="{{ cluster['Subnet']['Netmask'] }}"
 {% endif %}
 {% endfor %}
+{% endif %}
 {% endif %}
 
 # The number of IP addresses to allocate to each security group.

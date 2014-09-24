@@ -20,3 +20,5 @@ euca_use_local_repo: true
 euca_local_repo_url: http://release-repo.eucalyptus-systems.com/software/eucalyptus/4.0/centos/6/x86_64/
 euca2ools_local_repo_url: http://release-repo.eucalyptus-systems.com/software/euca2ools/3.1/centos/6/x86_64/
 
+euca_repo_file: /etc/yum.repos.d/eucalyptus.repo
+euca2ools_repo_file: /etc/yum.repos.d/euca2ools.repo

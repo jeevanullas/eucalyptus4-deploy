@@ -2,11 +2,32 @@
 # CC Registration
 #
 
-- name: Register CC
+- name: Register CC | EDGE VLAN
   shell: euca_conf --register-cluster --partition "{{ hostvars[item]['partition'] }}" --component "{{ hostvars[item]['cc_name'] }}" --host "{{ hostvars[item]['ansible_' + "%s.%d"|format(cc_vnet_private,  hostvars[item]['vlan_tag'])]['ipv4']['address'] }}" 
   with_items: "{{ groups.cc }}"
   when:
   - use_vlans
+  - networking_mode == "EDGE"
+  tags:
+  - cc
+  - regisration
+
+- name: Register CC | MANAGED-NOVLAN + VLAN
+  shell: euca_conf --register-cluster --partition "{{ hostvars[item]['partition'] }}" --component "{{ hostvars[item]['cc_name'] }}" --host "{{ hostvars[item]['ansible_' + "%s.%d"|format(cc_vnet_public,  hostvars[item]['vlan_tag'])]['ipv4']['address'] }}" 
+  with_items: "{{ groups.cc }}"
+  when:
+  - use_vlans
+  - networking_mode == "MANAGED-NOVLAN"
+  tags:
+  - cc
+  - regisration
+
+- name: Register CC | NO VLAN
+  shell: euca_conf --register-cluster --partition "{{ hostvars[item]['partition'] }}" --component "{{ hostvars[item]['cc_name'] }}" --host "{{ hostvars[item]['ansible_' + cc_vnet_public]['ipv4']['address'] }}" 
+  with_items: "{{ groups.cc }}"
+  when:
+  - not use_vlans
+  - not networking_mode == "EDGE"
   tags:
   - cc
   - regisration
