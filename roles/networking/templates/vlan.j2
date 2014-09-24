@@ -12,9 +12,9 @@ IPV6INIT=no
 NOZEROCONF=yes
 {% if inventory_hostname in groups['nc'] %}
 {% if use_vlans %}
-BRIDGE={{ nc_bridge_prefix }}{{ vlan_tag }}
+BRIDGE={{ inventory_hostname['bridge_prefix'] }}{{ inventory_hostname['vlan_tag ']}}
 {% else %}
-BRIDGE={{ nc_bridge_prefix }}{{ nc_bridge_id }}
+BRIDGE={{ inventory_hostname['bridge_prefix'] }}{{ inventory_hostname['bridge_id'] }}
 {% endif %}
 {% else %}
 IPADDR={{ ip.stdout }}

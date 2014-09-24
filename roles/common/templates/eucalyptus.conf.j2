@@ -243,11 +243,13 @@ VNET_PUBINTERFACE="{{ hostvars[inventory_hostname]['vnet_private'] }}"
 # network interfaces should attach.  A physical interface that can reach
 # the CC must be attached to this bridge.
 # Networking modes: Edge, Managed (No VLAN)
-{% if networking_mode == ("EDGE" or "MANAGED-NOVLAN") %}
+{% if networking_mode == "EDGE" or networking_mode == "MANAGED-NOVLAN" %}
+{% if inventory_hostname in groups['nc'] %}
 {% if use_vlans %}
-VNET_BRIDGE="{{ "%s%d" |format(bridge_prefix, vlan_tag)}}"
+VNET_BRIDGE="{{ "%s%d" |format(hostvars[inventory_hostname]['bridge_prefix'], hostvars[inventory_hostname]['vlan_tag'])}}"
 {% else %}
-VNET_BRIDGE="{{ "%s%d" |format(bridge_prefix, bridge_id)}}"
+VNET_BRIDGE="{{ "%s%d" |format(hostvars[inventory_hostname]['bridge_prefix'], hostvars[inventory_hostname]['bridge_id'])}}"
+{% endif %}
 {% endif %}
 {% else %}
 VNET_BRIDGE="br0"

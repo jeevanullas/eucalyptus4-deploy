@@ -1,0 +1,9 @@
+NAME="{{ hostvars[inventory_hostname]['vnet_private'] }}"
+DEVICE="{{ hostvars[inventory_hostname]['vnet_private'] }}"
+{% if use_vlans %}
+BRIDGE={{ bridge_prefix }}{{ vlan_tag }}
+{% else %}
+BRIDGE={{ bridge_prefix }}{{ bridge_id }}
+{% endif %}
+ONBOOT=yes
+NOZEROCONF=yes

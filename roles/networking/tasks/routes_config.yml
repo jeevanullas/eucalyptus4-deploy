@@ -21,7 +21,7 @@
   - use_vlans
 
 - name: Generate static routes config file
-  template: src=routes.j2 dest="{{ netcfg_path }}/route-{{ vlan_iface }}"
+  template: src=routes.j2 dest="{{ netcfg_path }}/route-{{ hostvars[inventory_hostname]['vlan_iface'] }}"
   tags:
   - network_config
   when:
@@ -30,7 +30,7 @@
   - use_vlans
  
 - name: Generate static routes config file
-  template: src=routes.j2 dest="{{ netcfg_path }}/route-{{ nc_bridge_prefix }}{{ vlan_tag }}"
+  template: src=routes.j2 dest="{{ netcfg_path }}/route-{{ hostvars[inventory_hostname]['bridge_prefix'] }}{{ hostvars[inventory_hostname]['vlan_tag'] }}"
   tags:
   - network_config
   when:
@@ -39,7 +39,7 @@
   - not networking_mode == "MANAGED"
 
 - name: Generate static routes config file
-  template: src=routes.j2 dest="{{ netcfg_path }}/route-{{ nc_bridge_prefix }}{{ bc_bridge_id }}"
+  template: src=routes.j2 dest="{{ netcfg_path }}/route-{{ hostvars[inventory_hostname]['bridge_prefix'] }}{{ hostvars[inventory_hostname]['bridge_id'] }}"
   tags:
   - network_config
   when:
