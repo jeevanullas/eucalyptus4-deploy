@@ -1,0 +1,34 @@
+
+# All components common tasks
+#
+
+- name : Configure VLANs
+  include: vlan_config.yml
+  when: 
+  - use_vlans
+  - not networking_mode == "MANAGED"
+  tags:
+  - network_config
+  
+- name: Configure NC bridges
+  include: bridge_config.yml
+  when:
+  - not networking_mode == "MANAGED"
+  - inventory_hostname in groups.nc
+  tags:
+  - network_config
+
+- name: Configure routes
+  include: routes_config.yml
+  tags:
+  - network_config
+
+- name: Apply sysctl
+  include: sysctl.yml
+  tags:
+  - network_config
+
+- name: Ensure network loaded
+  service: name=network state=restarted
+  tags:
+  - network_config

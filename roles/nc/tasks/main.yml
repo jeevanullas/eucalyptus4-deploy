@@ -3,19 +3,11 @@
 #
 
 - name: Setup eucanetd
-  yum: name=eucanetd state=present
+  yum: name=eucanetd state=latest
   when:
   - networking_mode == "EDGE"
   tags:
   - packages
-  - nc
-
-- name: NC EDGE config
-  include: edge.yml
-  when:
-  - networking_mode == "EDGE"
-  tags:
-  - init_config
   - nc
 
 - name: Authorize CC SSH Key

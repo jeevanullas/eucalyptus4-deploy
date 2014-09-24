@@ -1,0 +1,9 @@
+#
+# Eucalyptus 4.0+ sysctl parameters
+#
+
+- name: Enable IP forwarding
+  sysctl: name=net.ipv4.ip_forward value=1 state=present reload=yes
+
+- name: Enable Bridge NF Calls
+  sysctl: name=net.bridge.bridge-nf-call-iptables value=1 state=present reload=yes

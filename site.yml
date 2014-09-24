@@ -2,8 +2,7 @@
 # Deploy
 #
 
-- hosts: clusters
-- hosts: java_fe
+- hosts: all
 
 - hosts: all
   vars_files:
@@ -12,6 +11,9 @@
   - vars/java.yml
   roles:
   - setup
+  - networking
+
+- hosts: all
 
 - hosts: all
   vars_files:
@@ -26,8 +28,6 @@
   - vars/main.yml
   - vars/networking.yml
   - vars/java.yml
-  vars:
-  - java_iface: "{{ vlan_iface }}.{{ vlan_tag }}"
   roles:
   - clc
 
@@ -36,8 +36,6 @@
   - vars/main.yml
   - vars/networking.yml
   - vars/java.yml
-  vars:
-  - java_iface: "{{ vlan_iface }}.{{ vlan_tag }}"
   roles:
   - ufs
 
@@ -46,8 +44,6 @@
   - vars/main.yml
   - vars/networking.yml
   - vars/java.yml
-  vars:
-  - java_iface: "{{ vlan_iface }}.{{ vlan_tag }}"
   roles:
   - walrus
 
@@ -71,8 +67,6 @@
   - vars/main.yml
   - vars/networking.yml
   - vars/java.yml
-  vars:
-  - java_iface: "{{ vlan_iface }}.{{ vlan_tag }}"
   roles:
   - sc
 

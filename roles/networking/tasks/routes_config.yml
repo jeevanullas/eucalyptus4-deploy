@@ -42,3 +42,9 @@
   - inventory_hostname in groups.nc
   - not use_vlans
   - not networking_mode == "MANAGED"
+
+- name: add NOZEROCONF to all networking files
+  shell: for i in `ls /etc/sysconfig/network-scripts/ | egrep ifcfg-'(em|eth|br)'`; do echo "NOZEROCONF=yes" >> /etc/sysconfig/network-scripts/$i ; done
+  tags:
+  - init_config
+  - network_config
