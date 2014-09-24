@@ -79,9 +79,9 @@ java_iface=em1
 cc-prc-01
 
 [cc:vars]
-cc_vnet_public: em1
-cc_vnet_bridge: false
-cc_vnet_private: em2
+cc_vnet_public=em1
+cc_vnet_bridge=false
+cc_vnet_private=em2
 
 #####################################################################################
 # Node Controllers
@@ -92,10 +92,10 @@ cc_vnet_private: em2
 nc-prc-01
 
 [nc:vars]
-nc_vnet_public: em1
-nc_vnet_private: em2
-nc_bridge_prefix: eucabr
-nc_bridge_id: 1
+nc_vnet_public=em1
+nc_vnet_private=em2
+nc_bridge_prefix=eucabr
+nc_bridge_id=1
 
 #####################################################################################
 # Storage Controllers
