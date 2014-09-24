@@ -33,8 +33,7 @@
   register: nc_vcpu
   tags:
   - init_config
-  when:
-  - inventory_hostname in goups.nc
+  - overcommit
 
 - name: Set eucalyptus config
   template: src=eucalyptus.conf.j2 dest=/etc/eucalyptus/eucalyptus.conf

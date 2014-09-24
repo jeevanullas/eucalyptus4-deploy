@@ -15,3 +15,8 @@ sysctl_conf_path: /etc/sysctl.conf
 
 
 cpu_overcommit: 4
+
+euca_use_local_repo: true
+euca_local_repo_url: http://release-repo.eucalyptus-systems.com/software/eucalyptus/4.0/centos/6/x86_64/
+euca2ools_local_repo_url: http://release-repo.eucalyptus-systems.com/software/euca2ools/3.1/centos/6/x86_64/
+

@@ -12,6 +12,22 @@
   tags:
   - packages
 
+- name: Use Eucalyptus local repositories
+  lineinfile: regexp=mirrorlist line="{{ euca_local_repo_url }}" dest="{{ euca_repo_file }}"
+  tags:
+  - packages
+  - init_config
+  when:
+  - euca_use_local_repo
+
+- name: Use euca2ools local repositories
+  lineinfile: regexp=mirrorlist line="{{ euca2ools_local_repo_url }}" dest="{{ euca2ools_repo_file }}"
+  tags:
+  - packages
+  - init_config
+  when:
+  - euca_use_local_repo
+
 - name: Setup ntpd
   yum: name=ntp state=present
   tags:
@@ -23,7 +39,7 @@
   - packages
 
 - name: Setup CLC packages
-  yum: name="{{ item }}" state=latest
+  yum: name="{{ item }}" state=present
   with_items:
   - eucalyptus-cloud
   - eucalyptus-imaging-worker-image
@@ -35,7 +51,7 @@
   - packages
 
 - name: Setup UFS package
-  yum: name="{{ item }}" state=latest
+  yum: name="{{ item }}" state=present
   with_items:
   - eucalyptus-cloud
   - eucalyptus-osg
@@ -46,7 +62,7 @@
   - packages
 
 - name: Setup SC package
-  yum: name="{{ item }}" state=latest
+  yum: name="{{ item }}" state=present
   with_items:
   - eucalyptus-sc
   when:
@@ -56,7 +72,7 @@
   - packages
 
 - name: Setup Walrus package
-  yum: name="{{ item }}" state=latest
+  yum: name="{{ item }}" state=present
   with_items:
   - eucalyptus-walrus
   when:
@@ -66,7 +82,7 @@
   - packages
 
 - name: Setup NC packages
-  yum: name="{{ item }}" state=latest
+  yum: name="{{ item }}" state=present
   with_items:
   - eucalyptus-nc
   - tcpdump
@@ -78,7 +94,7 @@
   - packages
 
 - name: Setup CC packages
-  yum: name="{{ item }}" state=latest
+  yum: name="{{ item }}" state=present
   with_items:
   - eucalyptus-cc
   - tcpdump

@@ -9,7 +9,6 @@
 # In case of multi-vlan & multi-subnet, adds these routes on hosts:
 vlan_routes:
 - 172.16.0.0/16
-- 172.17.0.0/16
 
 ## CLOUD NETWORK CONFIGURATION ##
 
@@ -52,4 +51,3 @@ nc_bridge_id: 1
 cc_vnet_public: em1
 cc_vnet_bridge: false
 cc_vnet_private: em2
-

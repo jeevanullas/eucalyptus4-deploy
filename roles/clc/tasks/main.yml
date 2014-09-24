@@ -53,3 +53,9 @@
   tags:
   - clc
   - cloud_config
+
+- name: Waiting for CLC to be listening
+  wait_for: path=/var/log/eucalyptus/cloud-output.log search_regex="Detected Interfaces"
+  tags:
+  - init_cloud
+  - clc

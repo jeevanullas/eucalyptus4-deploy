@@ -8,6 +8,7 @@
   tags:
   - config
   - cc
+  - cc_keys
 
 - name: Deploy CC ssh key
   authorized_key: user=root state=present key="{{ cc_public_key.ssh_public_key }}"
@@ -23,11 +24,12 @@
   - cc
 
 - name: Import CC(s) public key
-  fetch: src=/root/.ssh/id_rsa.pub dest=/var/tmp/cc-"{{ hostvars[item]['partition'] }}" flat=yes
+  fetch: src=/root/.ssh/id_rsa.pub dest="/var/tmp/cc-{{ hostvars[item]['partition'] }}" flat=yes
   with_items: "{{ groups.cc }}"
   tags:
   - config
   - cc
+  - cc_keys
 
 - name: Authorize CLC SSH Key
   authorized_key: user=root key="{{ lookup('file', '/var/tmp/clc-pub-key') }}"

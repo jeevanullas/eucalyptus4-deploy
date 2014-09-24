@@ -101,7 +101,7 @@ USE_VIRTIO_NET="1"
 # to instances.  The default value of 0 allows Eucalyptus to use all
 # CPU cores on the system.
 {% if inventory_hostname in groups['nc'] %}
-MAX_CORES="{{  nc_vcpu.stdout|int }}"
+MAX_CORES="{{  nc_vcpu.stdout }}"
 {% else %}
 #MAX_CORES="0"
 {% endif %}
@@ -110,7 +110,7 @@ MAX_CORES="{{  nc_vcpu.stdout|int }}"
 # the NC chooses automatically.  Values below 10 are ignored.
 {% if groups == 'nc' %}
 {% if nc_work_size %}
-NC_WORK_SIZE="{{ nc_work_size|int }}"
+NC_WORK_SIZE="{{ nc_work_size }}"
 {% endif %}
 {% else %}
 #NC_WORK_SIZE="50000"
@@ -120,7 +120,7 @@ NC_WORK_SIZE="{{ nc_work_size|int }}"
 # the NC chooses automatically.  A value below 10 will disable caching.
 {% if groups == 'nc' %}
 {% if nc_cache_size %}
-NC_CACHE_SIZE="{{ nc_cache_size|int }}"
+NC_CACHE_SIZE="{{ nc_cache_size }}"
 {% endif %}
 {% else %}
 #NC_CACHE_SIZE=50000
