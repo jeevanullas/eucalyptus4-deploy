@@ -1,11 +1,38 @@
 #
-# Eucalyptus deploy
+# Eucalyptus deploy | GLOBAL SETTINGS
+#
+
+#############################################################
+#
+# Eucalyptus required repositories
 #
 
 euca_repo_url: http://downloads.eucalyptus.com/software/eucalyptus/4.0/centos/6/x86_64/eucalyptus-release-4.0.el6.noarch.rpm
 euca2ools_repo_url: http://downloads.eucalyptus.com/software/euca2ools/3.1/centos/6/x86_64/euca2ools-release-3.1.el6.noarch.rpm
 epel_repo_url: http://downloads.eucalyptus.com/software/eucalyptus/4.0/centos/6/x86_64/epel-release-6.noarch.rpm
 elrepo_repo_url: http://downloads.eucalyptus.com/software/eucalyptus/4.0/centos/6/x86_64/elrepo-release-6.noarch.rpm
+
+#############################################################
+#
+# If you have local repositories of eucalyptus and euca2ools, specify here
+#
+
+euca_use_local_repo: true
+euca_local_repo_url: http://release-repo.eucalyptus-systems.com/software/eucalyptus/4.0/centos/6/x86_64/
+euca2ools_local_repo_url: http://release-repo.eucalyptus-systems.com/software/euca2ools/3.1/centos/6/x86_64/
+
+#############################################################
+#
+# Files containing the repository definiion | Endpoint will be updated with yours
+#
+
+euca_repo_file: /etc/yum.repos.d/eucalyptus.repo
+euca2ools_repo_file: /etc/yum.repos.d/euca2ools.repo
+
+############################################################
+#
+# Global configuration files
+#
 
 euca_conf_path: /etc/eucalyptus/eucalyptus.conf
 netcfg_path: /etc/sysconfig/network-scripts
@@ -14,11 +41,9 @@ network_conf_path: /etc/sysconfig/network
 sysctl_conf_path: /etc/sysctl.conf
 
 
+############################################################
+#
+# CPU Overcommit | Applies only to NCs
+#
+
 cpu_overcommit: 4
-
-euca_use_local_repo: true
-euca_local_repo_url: http://release-repo.eucalyptus-systems.com/software/eucalyptus/4.0/centos/6/x86_64/
-euca2ools_local_repo_url: http://release-repo.eucalyptus-systems.com/software/euca2ools/3.1/centos/6/x86_64/
-
-euca_repo_file: /etc/yum.repos.d/eucalyptus.repo
-euca2ools_repo_file: /etc/yum.repos.d/euca2ools.repo

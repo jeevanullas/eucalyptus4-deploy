@@ -1,0 +1,133 @@
+#
+# Eucalyptus 4 - Deploy with Ansible
+#
+
+## VARIABLES DEFINITIONS ##
+# Recommended changes :
+# - vlan_iface : NIC where VLAN gets created
+# - vlan_ip : IP assigned to VLAN Iface
+# - vlan_gw : VLAN Subnet's GW
+# - partition : name of the AZ
+
+#
+# CLC HOST  - UNIQUE !!
+#
+
+[clc]
+odc-c-32
+
+[clc:vars]
+vlan_iface=em2
+vlan_ip=172.16.0.2/16
+
+#
+# WALRUS - UNIQUE !!
+#
+[walrus]
+odc-c-33 vlan_ip=172.16.0.2/16 walrus_name="walrus-prc"
+
+#
+# User Facing Services - ufs_name MUST BE UNIQUE
+#
+[ufs]
+odc-c-33 vlan_ip=172.16.0.2/16 ufs_name=EMEA-01
+
+#
+# CC definition - Change name as pleases
+# cc_name MUST BE UNIQUE | 1 CC per name
+#
+[cc-emea-01]
+odc-c-34 vlan_ip=172.16.0.3/16 cc_name=cc-emea-01 cc_vnet_private=em2.1000
+
+#
+# Storage Controllers
+# sc_name MUST BE UNIQUE
+#
+[sc-emea-01]
+odc-c-34 vlan_ip=172.16.0.3/16 sc_name=sc-emea-01 vlan_iface=em2
+
+
+#
+# Node Controllers
+#
+[nc-emea-01]
+odc-c-35 vlan_ip=172.16.0.44/16
+odc-c-36 vlan_ip=172.16.0.44/16
+odc-c-39 vlan_ip=172.16.0.44/16
+
+
+#
+# Front-End Services
+# CLC / UFS / Walrus (JAVA Components)
+#
+
+
+[java_fe:children]
+clc
+ufs
+walrus
+sc
+
+[java_fe:vars]
+vlan_tag=1000
+vlan_iface=em2
+vlan_gw=172.16.255.254
+java_iface=em1
+
+#
+# Cluster Controllers
+# Allows to manage CC tasks for any AZ cluster | CHANGE only if needed
+#
+
+[cc:children]
+cc-emea-01
+
+[cc:vars]
+vlan_iface=em2
+
+#
+# Storage Controllers
+# Allows to manage SC tasks for any AZ cluster | CHANGE only if needed
+#
+
+[sc:children]
+sc-emea-01
+
+[sc:vars]
+
+#
+# Node Controllers
+# Allows to manage NCs tasks for any Node | CHANGE name only if needed
+#
+
+[nc:children]
+nc-emea-01
+
+[nc:vars]
+vlan_iface=em2
+
+#
+# CLUSTER DEFINITION
+# Allow to define values global to the cluster, such as VLAN TAG or partition name | CHANGE NAME ONLY
+# MANDATORY to keep CC/SC/NC to form a complete cluster
+#
+
+[emea01:children]
+cc-emea-01
+sc-emea-01
+nc-emea-01
+
+[emea01:vars]
+partition=emea-01
+vlan_tag=1000
+vlan_gw=172.16.255.254
+
+#
+# ALL CLUSTERS AS ONE
+#
+
+[clusters:children]
+emea01
+
+[clusters:vars]
+

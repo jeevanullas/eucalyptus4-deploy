@@ -1,0 +1,70 @@
+#
+# Network specific parameters
+#
+## CLOUD NETWORK CONFIGURATION ##
+
+networking_mode: MANAGED
+
+use_vlans: false
+edge_using_private: false
+nc_use_bridges: false
+
+##############################################################
+## CLUSTER NETWORK DEFINITION ##
+#
+# These values are to be IN THIS FILE and not in the hosts
+# These values describe global cloud network configuration
+#
+######################################
+# MANAGED Mode - Specific values
+#
+managed_addrpernet: 32
+managed_max_vlan: 1010
+managed_min_vlan: 1000
+
+######################################
+#
+# Values here are GLOBAL to the cloud
+#
+######################################
+# DNS domain search
+
+instance_dns_domain: emea.lan
+
+######################################
+# DNS nameservers
+
+instance_dns_servers: 
+- 10.1.1.254
+
+######################################
+# Cloud Public IPs (EIPs)
+
+pub_ips:
+- "10.104.6.1-10.104.6.64"
+- "10.104.6.66-10.104.6.127"
+
+######################################
+# Cluster specific networking definition
+
+clusters:
+- {"Name": "emea-01", "MacPrefix": "d0:0d", "Subnet": { "Name": "172.33.0.0", "Subnet": "172.33.0.0", "Netmask": "255.255.0.0", "Gateway": "172.33.255.254"}, "PrivateIps": ["172.16.1.0-172.16.254.254"]}
+
+###################################################################
+## BACKEND IFACES DEFINITION ##
+#
+# These values are defined in the hosts file by default
+# These values here are example. Try to keep it that way
+#
+###################################
+# NC #
+#nc_vnet_public: em1
+#nc_vnet_private: em2
+#nc_bridge_prefix: eucabr
+#nc_bridge_id: 1
+
+##################################
+# CC #
+#cc_vnet_public: em1
+#cc_vnet_bridge: false
+#cc_vnet_private: em2
