@@ -8,7 +8,6 @@ VARIABLES
 
 This playbooks gives differents variables files under the vars/ directory. You will find an example for each mode and topology this playbook has been tested with.
 
-
 What the user MUST do:
 ----------------------
 
@@ -83,4 +82,17 @@ The playbook will automatically :
 
 - Create the BRIDGE interface using the defined interface's network settings
 
-MANAGED-NOVLAN will allow 
+MANAGED-NOVLAN will allow users who dont have VLAN allowance on their backend network to have it working on the existing network.
+
+Topology 5 : MANAGED-NOVLAN with a VLAN Backend
+-----------------------------------------------
+
+This deployment is for people who have a very small VLAN allowance and want to separate the instances traffic from the servers'
+
+The playbook with automatically :
+
+- create the VLAN iface on the NCs
+
+- create the VLAN on the CC private iface
+
+- create the BRIDGE iface on-top of the VLAN iface
