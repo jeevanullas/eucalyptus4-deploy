@@ -2,8 +2,18 @@
 # CC Registration
 #
 
-- name: Register CC | EDGE VLAN
-  shell: euca_conf --register-cluster --partition "{{ hostvars[item]['partition'] }}" --component "{{ hostvars[item]['cc_name'] }}" --host "{{ hostvars[item]['ansible_' + "%s.%d"|format(hostvars[item]['vnet_private'],  hostvars[item]['vlan_tag'])]['ipv4']['address'] }}" 
+- name: Register CC | EDGE
+  shell: euca_conf --register-cluster --partition "{{ hostvars[item]['partition'] }}" --component "{{ hostvars[item]['cc_name'] }}" --host "{{ hostvars[item]['ansible_' + hostvars[item]['vnet_public']]['ipv4']['address'] }}" 
+  with_items: "{{ groups.cc }}"
+  when:
+  - not use_vlans
+  - networking_mode == "EDGE"
+  tags:
+  - cc
+  - regisration
+
+- name: Register CC | EDGE + VLAN-BACKEND
+  shell: euca_conf --register-cluster --partition "{{ hostvars[item]['partition'] }}" --component "{{ hostvars[item]['cc_name'] }}" --host "{{ hostvars[item]['ansible_' + "%s.%d"|format(hostvars[item]['vnet_private'], hostvars[item]['vlan_tag'])]['ipv4']['address'] }}" 
   with_items: "{{ groups.cc }}"
   when:
   - use_vlans
@@ -12,7 +22,17 @@
   - cc
   - regisration
 
-- name: Register CC | MANAGED-NOVLAN + VLAN
+- name: Register CC | MANAGED-NOVLAN
+  shell: euca_conf --register-cluster --partition "{{ hostvars[item]['partition'] }}" --component "{{ hostvars[item]['cc_name'] }}" --host "{{ hostvars[item]['ansible_' + hostvars[item]['vnet_public']]['ipv4']['address'] }}" 
+  with_items: "{{ groups.cc }}"
+  when:
+  - not use_vlans
+  - networking_mode == "MANAGED-NOVLAN"
+  tags:
+  - cc
+  - regisration
+
+- name: Register CC | MANAGED-NOVLAN + VLAN-BACKEND
   shell: euca_conf --register-cluster --partition "{{ hostvars[item]['partition'] }}" --component "{{ hostvars[item]['cc_name'] }}" --host "{{ hostvars[item]['ansible_' + "%s.%d"|format(hostvars[item]['vnet_public'],  hostvars[item]['vlan_tag'])]['ipv4']['address'] }}" 
   with_items: "{{ groups.cc }}"
   when:
@@ -22,7 +42,7 @@
   - cc
   - regisration
 
-- name: Register CC | NO VLAN
+- name: Register CC | MANAGED
   shell: euca_conf --register-cluster --partition "{{ hostvars[item]['partition'] }}" --component "{{ hostvars[item]['cc_name'] }}" --host "{{ hostvars[item]['ansible_' + hostvars[item]['vnet_public']]['ipv4']['address'] }}" 
   with_items: "{{ groups.cc }}"
   when:

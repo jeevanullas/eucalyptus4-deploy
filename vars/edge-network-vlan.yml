@@ -3,7 +3,7 @@
 #
 ## CLOUD NETWORK CONFIGURATION ##
 
-networking_mode: MANAGED
+networking_mode: EDGE
 
 use_vlans: true
 edge_using_private: false

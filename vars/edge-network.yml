@@ -3,11 +3,10 @@
 #
 ## CLOUD NETWORK CONFIGURATION ##
 
-networking_mode: MANAGED
+networking_mode: EDGE
 
 use_vlans: false
-edge_using_private: false
-nc_use_bridges: false
+edge_using_private: true
 
 ##############################################################
 ## CLUSTER NETWORK DEFINITION ##
@@ -41,8 +40,7 @@ instance_dns_servers:
 # Cloud Public IPs (EIPs)
 
 pub_ips:
-- "10.104.6.1-10.104.6.64"
-- "10.104.6.66-10.104.6.127"
+- "109.104.120.41-109.104.120.59"
 
 ######################################
 # Cluster specific networking definition

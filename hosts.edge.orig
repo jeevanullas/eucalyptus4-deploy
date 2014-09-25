@@ -15,7 +15,7 @@
 # CLC HOST - UNIQUE !!
 #
 [clc]
-odc-c-32
+nc-5
 
 [clc:vars]
 
@@ -23,7 +23,7 @@ odc-c-32
 # WALRUS - UNIQUE !!
 #
 [walrus]
-odc-c-33
+nc-5
 
 [walrus:vars]
 walrus_name="walrus-prc"
@@ -32,30 +32,29 @@ walrus_name="walrus-prc"
 # User Facing Services - ufs_name MUST BE UNIQUE
 #
 [ufs]
-odc-c-33 ufs_name=PRC-01
+nc-5 ufs_name=PRC-01
 
 #####################################################################################
 # CC definition - Change name as pleases
 # cc_name MUST BE UNIQUE | 1 CC per name
 #
 [cc-prc-01]
-odc-c-34 cc_name=cc-prc-01
+nc-6 cc_name="cc-prc-01"
 
 #####################################################################################
 # Storage Controllers
 # sc_name MUST BE UNIQUE
 #
 [sc-prc-01]
-odc-c-34 sc_name=sc-prc-01
+nc-6 sc_name="sc-prc-01"
 
 
 #####################################################################################
 # Node Controllers
 #
 [nc-prc-01]
-odc-c-35
-odc-c-36
-odc-c-39
+nc-7
+nc-8
 
 
 #####################################################################################
@@ -69,7 +68,7 @@ walrus
 sc
 
 [java_fe:vars]
-java_iface=em1
+java_iface=em2
 
 #####################################################################################
 # Cluster Controllers
@@ -129,4 +128,3 @@ partition=prc-01
 prc01
 
 [clusters:vars]
-

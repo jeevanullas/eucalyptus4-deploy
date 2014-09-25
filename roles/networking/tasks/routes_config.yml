@@ -38,11 +38,12 @@
   - use_vlans
   - not networking_mode == "MANAGED"
 
-- name: Generate static routes config file | NOVLAN
+- name: Generate static routes config file | EDGE-NOVLAN
   template: src=routes.j2 dest="{{ netcfg_path }}/route-{{ hostvars[inventory_hostname]['bridge_prefix'] }}{{ hostvars[inventory_hostname]['bridge_id'] }}"
   tags:
   - network_config
   when:
+  - routes_vlan|success
   - inventory_hostname in groups.nc
   - not use_vlans
   - networking_mode == "EDGE"

@@ -10,7 +10,6 @@
   with_items: "{{ groups.nc }}"
   when: 
   - partition == "{{ hostvars[item]['partition'] }}"
-  - nc_use_bridges
   - use_vlans
   tags:
   - nc_registration
@@ -20,7 +19,6 @@
   with_items: "{{ groups.nc }}"
   when: 
   - partition == "{{ hostvars[item]['partition'] }}"
-  - nc_use_bridges
   - not use_vlans
   tags:
   - nc_registration
