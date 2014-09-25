@@ -64,11 +64,14 @@ The playbook will :
 Topology 3 : MANAGED 
 --------------------
 
-Eucalyptus documentation : `<https://www.eucalyptus.com/docs/eucalyptus/4.0/#install-guide/planning_managed.html>` 
+`Eucalyptus documentation <https://www.eucalyptus.com/docs/eucalyptus/4.0/#install-guide/planning_managed.html>`
 
 The playbook will automatically :
 
 - Setup Eucalyptus and configure hosts with the defined settings
 
-.. warning:: To use MANAGED mode, you need to KNOW your networking VLAN allowance
+WARNING
+^^^^^^^
+
+To use MANAGED mode, you need to KNOW your networking VLAN allowance
 
