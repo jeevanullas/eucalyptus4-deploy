@@ -22,6 +22,8 @@
   template: src=iface.j2 dest="{{ netcfg_path }}/ifcfg-{{ hostvars[inventory_hostname]['vnet_private'] }}"
   tags:
   - network_config
+  when:
+  - not use_vlans
 
 - name: Creates the Bridge config file | VLAN
   template: src=bridge.j2 dest="{{ netcfg_path }}/ifcfg-{{ bridge_prefix }}{{ vlan_tag }}"
@@ -29,9 +31,6 @@
   - network_config
   when:
   - use_vlans
-  notify:
-  - network restart
-
 
 - name: Creates the Bridge config file | NOVLAN
   template: src=bridge.j2 dest="{{ netcfg_path }}/ifcfg-{{ bridge_prefix }}{{ bridge_id }}"

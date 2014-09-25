@@ -64,14 +64,23 @@ The playbook will :
 Topology 3 : MANAGED 
 --------------------
 
-`Eucalyptus documentation <https://www.eucalyptus.com/docs/eucalyptus/4.0/#install-guide/planning_managed.html>`
+Eucalyptus documentation : https://www.eucalyptus.com/docs/eucalyptus/4.0/#install-guide/planning_managed.html
 
 The playbook will automatically :
 
 - Setup Eucalyptus and configure hosts with the defined settings
 
 WARNING
-^^^^^^^
 
 To use MANAGED mode, you need to KNOW your networking VLAN allowance
 
+Topology 4 : MANAGED-NOVLAN
+---------------------------
+
+Eucalyptus documentation : https://www.eucalyptus.com/docs/eucalyptus/4.0/#install-guide/planning_managed_novlan.html
+
+The playbook will automatically :
+
+- Create the BRIDGE interface using the defined interface's network settings
+
+MANAGED-NOVLAN will allow 

@@ -15,50 +15,47 @@
 # CLC HOST - UNIQUE !!
 #
 [clc]
-odc-c-32
+nc-5
 
 [clc:vars]
-vlan_ip=172.33.0.32
+vlan_ip=172.33.0.32/16
 
 #####################################################################################
 # WALRUS - UNIQUE !!
 #
 [walrus]
-odc-c-33
+nc-6
 
 [walrus:vars]
 walrus_name="walrus-prc"
-vlan_ip=172.33.0.33
+vlan_ip=172.33.0.33/16
 
 #####################################################################################
 # User Facing Services - ufs_name MUST BE UNIQUE
 #
 [ufs]
-odc-c-33 ufs_name=PRC-01 vlan_ip=172.33.0.33
+nc-6 ufs_name=PRC-01 vlan_ip=172.33.0.33/16
 
 #####################################################################################
 # CC definition - Change name as pleases
 # cc_name MUST BE UNIQUE | 1 CC per name
 #
 [cc-prc-01]
-odc-c-34 cc_name=cc-prc-01 vlan_ip=172.33.0.34
+nc-7 cc_name=cc-prc-01 vlan_ip=172.33.0.34/16
 
 #####################################################################################
 # Storage Controllers
 # sc_name MUST BE UNIQUE
 #
 [sc-prc-01]
-odc-c-34 sc_name=sc-prc-01 vlan_ip=172.33.0.34
+nc-7 sc_name=sc-prc-01 vlan_ip=172.33.0.34/16
 
 
 #####################################################################################
 # Node Controllers
 #
 [nc-prc-01]
-odc-c-35 vlan_ip=172.33.0.35
-odc-c-36 vlan_ip=172.33.0.36
-odc-c-39 vlan_ip=172.33.0.39
-
+nc-8 vlan_ip=172.33.0.35/16
 
 #####################################################################################
 # Front-End Services
@@ -71,9 +68,10 @@ walrus
 sc
 
 [java_fe:vars]
-java_iface=em2.1000
+java_iface=em2.200
 vlan_iface=em2
-vlan_tag=1000
+vlan_tag=200
+vlan_gw=172.33.255.254
 
 #####################################################################################
 # Cluster Controllers
@@ -100,6 +98,7 @@ vnet_public=em1
 vnet_private=em2
 bridge_prefix=eucabr
 bridge_id=1
+vlan_tag=200
 
 #####################################################################################
 # Storage Controllers
@@ -124,8 +123,9 @@ nc-prc-01
 
 [prc01:vars]
 partition=prc-01
-vlan_tag=1000
+vlan_tag=200
 vlan_iface=em2
+vlan_gw=172.33.255.254
 
 #####################################################################################
 # ALL CLUSTERS AS ONE

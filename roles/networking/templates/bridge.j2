@@ -1,12 +1,12 @@
 {% if inventory_hostname in groups['nc'] %}
 {% if use_vlans %}
-NAME={{ bridge_prefix }}{{ vlan_tag }}
-DEVICE={{ bridge_prefix }}{{ vlan_tag }}
+NAME={{ hostvars[inventory_hostname]['bridge_prefix'] }}{{ hostvars[inventory_hostname]['vlan_tag'] }}
+DEVICE={{ hostvars[inventory_hostname]['bridge_prefix'] }}{{ hostvars[inventory_hostname]['vlan_tag'] }}
 IPADDR={{ ip.stdout }}
 PREFIX={{ prefix.stdout }}
 {% else %}
-NAME={{ bridge_prefix }}{{ bridge_id }}
-DEVICE={{ bridge_prefix }}{{ bridge_id }}
+NAME={{ hostvars[inventory_hostname]['bridge_prefix'] }}{{ hostvars[inventory_hostname]['bridge_id'] }}
+DEVICE={{ hostvars[inventory_hostname]['bridge_prefix'] }}{{ hostvars[inventory_hostname]['bridge_id'] }}
 {% set avnet = 'ansible_' + hostvars[inventory_hostname]['vnet_private'] %}
 IPADDR={{ hostvars[inventory_hostname][avnet]['ipv4']['address'] }}
 NETMASK={{ hostvars[inventory_hostname][avnet]['ipv4']['netmask'] }}
