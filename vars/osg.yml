@@ -1,0 +1,31 @@
+#################################################################
+#
+# OSG Configurations
+#
+
+###############################################
+#
+# OSG provider. Values are : walrus,riakcs,s3
+#
+osg_provider_name: walrus
+
+
+################################################
+#
+# RIAK-CS properties
+#
+riakcs_properties:
+- {'name': 'objectstorage.s3provider.s3endpoint', 'value': 'http://RIACKS-URL'}
+- {'name': 'objectstorage.s3provider.s3accesskey', 'value': 'riak_akey'}
+- {'name': 'objectstorage.s3provider.s3secretkey', 'value': 'riak_skey'}
+
+
+################################################
+#
+# S3 properties
+#
+
+aws_s3_properties:
+- {'name': 'objectstorage.s3provider.s3endpoint', 'value': 'http://RIACKS-URL'}
+- {'name': 'objectstorage.s3provider.s3accesskey', 'value': 'riak_akey'}
+- {'name': 'objectstorage.s3provider.s3secretkey', 'value': 'riak_skey'}

@@ -1,0 +1,23 @@
+################################################################
+#
+# This part describes how storage controllers will be configured
+#
+
+###########################################################
+#
+# List of all storages (1/az) which contains the list of parameers
+#
+sc_clusters:
+- {'partition': 'prc-01', 'mode': 'das', 'properties': [ {'name': 'dasdevice', 'value': 'vg01'}]}
+
+###########################################################
+#
+# Samples
+#
+# sc_clusters:
+# - {'partition': 'prc-01', 'mode': 'das', 'properties': [ {'name': 'dasdevice', 'value': 'vg01'}]}
+# - {'partition': 'prc-02', 'mode': 'das', 'properties': []}
+# - {'partition': 'prc-03', 'mode': 'netapp', 'properties': [{'name':'sanhost', 'value': '10.105.2.103'}, {'name': 'sanuser', 'value': 'root'}, {'name': 'sanpassword', 'value': 'N3t4pp'}]}
+#
+#
+

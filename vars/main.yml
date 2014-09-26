@@ -40,6 +40,11 @@ euca_db_path: /var/lib/eucalyptus/db/data
 network_conf_path: /etc/sysconfig/network
 sysctl_conf_path: /etc/sysctl.conf
 
+eucalyptus_cloudoutput_path: /var/log/eucalyptus/cloud-output.log
+euca_admin_zip_file: /var/tmp/admin.zip
+euca_admin_creds_path: /var/tmp/creds/
+
+osg_provider_property: objectstorage.providerclient
 
 ############################################################
 #

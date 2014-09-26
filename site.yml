@@ -100,3 +100,13 @@
   - vars/networking.yml
   roles:
   - startCompute
+
+- hosts: clc
+  vars_files:
+  - vars/main.yml
+  - vars/osg.yml
+  - vars/storage.yml
+  roles:
+  - getCredentials
+  - configureOSG
+  - configureSC
