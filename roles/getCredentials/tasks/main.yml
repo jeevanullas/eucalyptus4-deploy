@@ -23,6 +23,12 @@
   tags:
   - credentials
 
+- name: Creates the creds target directory
+  shell: mkdir -p "{{ euca_admin_creds_path }}"
+  tags:
+  - credentials
+  ignore_errors: yes
+
 - name: Unzip the credentials
   unarchive: copy=no src="{{ euca_admin_zip_file }}" dest="{{ euca_admin_creds_path }}" creates=yes
   tags:

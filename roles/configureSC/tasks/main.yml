@@ -22,7 +22,9 @@
   ignore_errors: yes
 
 - name: Wait for SC to be ENABLED
-  pause: prompt="Making sure SC is now ENABLED" seconds=15
+  pause: prompt="Making sure SC is now set to its block storage - properties can now be changed" seconds=30
+  tags:
+  - sc_config
 
 - name: Configure the block manager properties
   shell: source "{{ euca_admin_creds_path }}"/eucarc ; euca-modify-property -p "{{ item.0['partition'] }}".storage."{{ item.1['name'] }}"="{{ item.1['value'] }}"
