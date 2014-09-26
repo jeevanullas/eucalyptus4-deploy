@@ -110,3 +110,5 @@
   - getCredentials
   - configureOSG
   - configureSC
+  - getCredentials
+  - setupImages
