@@ -109,6 +109,9 @@
   roles:
   - getCredentials
   - configureOSG
+  - getCredentials
   - configureSC
+  - getCredentials
+  - configureNetwork
   - getCredentials
   - setupImages

@@ -45,6 +45,8 @@ euca_admin_zip_file: /var/tmp/admin.zip
 euca_admin_creds_path: /var/tmp/creds/
 
 osg_provider_property: objectstorage.providerclient
+edge_network_property: cloud.network.network_configuration
+edge_network_config_file: /root/network.json
 
 ############################################################
 #
